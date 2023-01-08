@@ -27,3 +27,5 @@ class Point:
         dx = abs(self.x - point2.x)
         dy = abs(self.y - point2.y)
         return dx + dy
+
+

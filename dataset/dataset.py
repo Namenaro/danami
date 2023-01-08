@@ -1,3 +1,5 @@
+from cogmap import Cogmap
+
 import numpy as np
 import random
 import torchvision.datasets as datasets
@@ -22,23 +24,30 @@ class Dataset:
         self.class_num = class_num
 
         self.class_pics = None
-        if class_num is not None:
-            self.class_pics = self.get_all_pics_for_class(class_num)
+        self.contrast_cogmaps = None
+
 
     def reset_class_num(self, new_class_num):
         self.class_num = new_class_num
-        self.class_pics = self.get_all_pics_for_class(new_class_num)
+        self.class_pics = None
+        self.contrast_cogmaps = None
 
     def get_etalon(self):
+        if self.class_pics is None:
+            self.class_pics = self.get_all_pics_for_class(self.class_num)
         return self.class_pics[0]
 
     def get_train(self):
+        if self.class_pics is None:
+            self.class_pics = self.get_all_pics_for_class(self.class_num)
         return self.class_pics[1:self.train_len]
 
     def get_test(self):
+        if self.class_pics is None:
+            self.class_pics = self.get_all_pics_for_class(self.class_num)
         return self.class_pics[self.train_len:]
 
-    def get_contrast(self, sample_size):
+    def get_contrast_pics(self, sample_size):
         contrast = []
         while True:
             if len(contrast) == sample_size:
@@ -54,3 +63,11 @@ class Dataset:
             if class_num == self.ominset[i][1]:
                 class_pics.append(binarise_img(self.ominset[i][0]))
         return class_pics
+
+    def get_contrast_cogmaps(self, sample_size=None):
+        if self.contrast_cogmaps is None:
+            contrast_pics = self.get_contrast_pics(sample_size)
+            self.contrast_cogmaps=[]
+            for pic in contrast_pics:
+                self.contrast_cogmaps.append(Cogmap(pic))
+        return self.contrast_cogmaps

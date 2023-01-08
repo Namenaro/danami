@@ -57,7 +57,7 @@ class CogmapBase:
         # событие конец
         id_of_end_in_cogmap = self.local_ids_gen.generate_id()
         end_event_point = seq[-1]
-        end_event = EventRealisation(seq, LUE=rule.end_LUE_id)
+        end_event = EventRealisation(seq, LUE=rule.end_LUE_id, )
 
         # регистрация событий на карте:
         # 1. регистрируем событие в точке

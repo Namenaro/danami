@@ -12,14 +12,14 @@ class Cogmap(CogmapBase):
     def register_exclusion_event(self, id_in_cogmap):
         self.exclusions.append(id_in_cogmap)
 
-    def find_events_around_point_by_LUE(self, point, LUE):
+    def find_events_around_point_by_LUE(self, point, LUE, wanted_num_events):
         # эти константы просто для того, чтоб примитивно ограничить комбинаторный взрыв, если он будет (не должен!)
-        MAX_EVENTS = 20
+        MAX_EVENTS = wanted_num_events
         MAX_RADIUS = 50
-        result = []
+        result_ids_in_cogmap = []
         radius = -1
         while True:
-            if radius == MAX_RADIUS or MAX_EVENTS == len(result):
+            if radius == MAX_RADIUS or MAX_EVENTS == len(result_ids_in_cogmap):
                 break
             radius += 1
             candidate_points = get_coords_for_radius(center=point, radius=radius)
@@ -29,8 +29,8 @@ class Cogmap(CogmapBase):
                     real_LUE = self.events_ids_to_realisations[event_id_in_cogmap].LUE
                     if real_LUE == LUE:
                         if event_id_in_cogmap not in self.exlusions:
-                            result.append(event_id_in_cogmap)
-        return result
+                            result_ids_in_cogmap.append(event_id_in_cogmap)
+        return result_ids_in_cogmap
 
 
     def get_event_by_id(self, id_in_cogmap):

@@ -14,19 +14,32 @@ def draw_cogmap(cogmap, logger):
     logger.add_fig(fig)
     logger.save()
 
+def draw_cogmap1(cogmap, logger):
+    fig, axs = plt.subplots(figsize=(8, 8), dpi=60)
+
+    cm = plt.get_cmap('seismic')
+    axs.imshow(cogmap.pic, cmap=cm, vmin=0, vmax=1)
+
+    for id_in_cogmap, point in cogmap.events_ids_to_points.items():
+       axs.scatter(point.x, point.y, s=200)
+
+
+    logger.add_fig(fig)
+    logger.save()
+
 
 def draw_event_realisation(back_pic_binary, ax, realisation, id_in_cogmap, point):
-    ax.title.set_text("event " + str(id_in_cogmap))
-    cm = plt.get_cmap('gray')
+    #ax.title.set_text("event " + str(id_in_cogmap))
+    cm = plt.get_cmap('seismic')
     ax.imshow(back_pic_binary, cmap=cm, vmin=0, vmax=1)
 
     color = 'green'
     marker = 'o'
     for coord in realisation.zmeika_points:
-        ax.scatter(coord.x, coord.y, c=color, marker=marker, alpha=0.8, s=200)
+        ax.scatter(coord.x, coord.y, c=color, marker=marker, alpha=0.4, s=200)
 
     ax.scatter(point.x, point.y)
-    annotation_str = "LUE_id=" + str(id_in_cogmap) + ", mass=" + str(realisation.mass)
-    ax.annotate(annotation_str, (point.x, point.y), color='blue', xytext=(20, 15), textcoords='offset points',
+    annotation_str = "id=" + str(id_in_cogmap) + ", mass=" + str(realisation.mass)
+    ax.annotate(annotation_str, (point.x, point.y), fontsize=20, color='yellow', xytext=(20, 15), textcoords='offset points',
                 ha='center', va='bottom', bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.6),
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.95', color='b'))
