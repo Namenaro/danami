@@ -14,8 +14,8 @@ class BasicGenerationSorted:
     def __init__(self):
         self.entries = []
 
-    def insert_new_realisation(self, realisation):
-        non_triviality = eval_realisation_non_triviality(realisation)
+    def insert_new_realisation(self, realisation, structure, cogmap):
+        non_triviality = eval_realisation_non_triviality(realisation, structure, cogmap)
         entry = RealisationEntry(realisation, non_triviality)
         insort(self.entries, entry, key=lambda x: -x.non_triviality)  # в порядке убывания
 
@@ -30,7 +30,7 @@ class BasicGenerationSorted:
             if event_realisation.LUE == prediction.LUE_id:
                 realisation = StructureRealisation()
                 realisation.add_new_event_realisation(id_in_cogmap, global_node_id)
-                self.insert_new_realisation(realisation)
+                self.insert_new_realisation(realisation, structure, cogmap)
 
     def is_empty(self):
         if len(self.entries) == 0:

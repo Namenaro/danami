@@ -2,7 +2,7 @@ from structure import StructureMemory, StructureRealisation, StructureTop
 from cogmap import Cogmap
 class Prediction:
     def __init__(self, LUE_id, point, mass, global_event_id):
-        self.LUE_id= LUE_id
+        self.LUE_id = LUE_id
         self.point = point
         self.mass = mass
         self.global_event_id = global_event_id
