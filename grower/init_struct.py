@@ -9,7 +9,6 @@ def init_struct():
     etalon_pic = GLOBALS.DATA.get_etalon()
     etalon_cogmap = Cogmap(etalon_pic)
     event_realisation, id_in_cogmap = etalon_cogmap.select_most_massive()
-    etalon_cogmap.register_exclusion_event(id_in_cogmap)
 
     event_memory = EventMemory(event_realisation)
     fill_event_memory_naive(event_memory)  # ходим по контрасту, собираем выборки параметров события
