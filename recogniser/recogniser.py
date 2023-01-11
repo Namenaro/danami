@@ -12,6 +12,46 @@ class RecogniserEngine:
         self.cogmap = cogmap
         self.generations_list = []
 
+    def recognise(self): # возвращает один "лучший" экземпляр структуры (не обязательно доросший до конца)
+        self._init_first_generation()
+        if self.generations_list[0].is_empty:
+            return None
+
+        for i in range(1, len(self.structure)):
+            # если пусто  предыдущее , надо вернуть лушую реализуацию из предыдущего поколения
+            if self.generations_list[-1].is_empty():
+                return self.generations_list[-1].get_best_realisation()
+            self._create_next_generaion()
+
+        # если после всех шагов роста последнее поколение не пусто, то выозвращаем его лучший экземпляр
+        if not self.generations_list[-1].is_empty():
+            return self.generations_list[-1].get_best_realisation()
+        # если последнее оказалось пусто возвращаем лучшее с предпоследнего (оно всегда есть и непусто)
+        return self.generations_list[-2].get_best_realisation()
+
+    def recognize_with_top(self, top_for_struct):  # возвращает лучший экземпляр структуры + событие по экспериментальному описанию (т.е. оно без энергии)
+        best_realisation = self.recognise()
+        if len(best_realisation) != len(self.structure):
+            return None
+        # если оно линковано к родителю, то определяется однозначным образом
+        local_parent_id = best_realisation.get_local_id_by_global(top_for_struct.global_parent_id)
+        if top_for_struct.is_linked_to_parent:
+            linked_event_id_in_cogmap = self.cogmap.get_linked_event_id(local_parent_id)
+            return linked_event_id_in_cogmap
+
+        # иначе ищем ближайшего с нужным LUE_id
+
+        point_of_parent= self.cogmap.get_point_by_event_id(local_parent_id)
+        predicted_point = point_of_parent + top_for_struct.u_from_parent
+        local_events_ids_list = self.cogmap.find_events_around_point_by_LUE(point=predicted_point,
+                                                                            LUE=top_for_struct.LUE_id,
+                                                                            wanted_num_events=1,
+                                                                            exlusions=best_realisation.get_list_of_local_ids())
+        return best_realisation, local_events_ids_list[0]
+
+
+
+    # служебные методы----------------------------------------------
     def _init_first_generation(self):
         first_generation = BasicGenerationSorted()
         first_generation.init_as_first_generation(self.structure, self.cogmap)
@@ -28,23 +68,6 @@ class RecogniserEngine:
         next_generation.cut_extra_exemplars(GLOBALS.SURVIVIVING_MAX)
         self.generations_list.append(next_generation)
 
-    def recognise(self):
-        self._init_first_generation()
-        if self.generations_list[0].is_empty:
-            return None # полный провал, ростки даже не начали расти не картинке нет такого LUE
-
-        for i in range(len(self.structure)):
-            # если пусто  предыдущее , надо вернуть лушую реализуацию из предыдущего поколения
-            if self.generations_list[-1].is_empty():
-                return self.generations_list[-1].get_best_realisation()
-            self._create_next_generaion()
-
-        # если после всех шагов роста последнее поколение не пусто, то выозвращаем его лучший экземпляр
-        if not self.generations_list[-1].is_empty():
-            return self.generations_list[-1].get_best_realisation()
-        # если последнее оказалось пусто возвращаем лучшее с предпоследнего:
-        return self.generations_list[-2].get_best_realisation()
-
 
 
     def _get_children_for_realisation(self, realisation):
@@ -60,10 +83,10 @@ class RecogniserEngine:
         # находим не более GROW_MAX кандидатов на его результат проверки
         # причем событий-кандидатов проверяем, не учтено ли оно уже в этом экземпляре
         realisations_list = []
-        local_events_ids_list = self.cogmap.find_events_around_point_by_LUE(self, point=prediction.point,
+        local_events_ids_list = self.cogmap.find_events_around_point_by_LUE(point=prediction.point,
                                                                         LUE=prediction.LUE_id,
                                                                         wanted_num_events=GLOBALS.SURVIVIVING_MAX,
-                                                                        exlusions=realisation.get_list_of_local_ids() )
+                                                                        exlusions=realisation.get_list_of_local_ids())
         for local_event_id in local_events_ids_list:
             child_realisation = deepcopy(realisation)
             child_realisation.add_new_event_realisation(local_event_id, prediction.global_event_id)
