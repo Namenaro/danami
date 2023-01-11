@@ -15,15 +15,21 @@ class Singleton(_Singleton('SingletonMeta', (object,), {})): pass
 
 class Globals(Singleton):
     def __init__(self):
-        self.PIC_SIDE = 105
+
         self.GLOBAL_IDS_GEN = common_utils.IdsGenerator()  # генетатор уникальных имен для событий, из которых строятся структуры
-        # основной лог (хотим, чтоб сохранялся в папке проекта)
-        self.DIR_PATH = os.path.dirname(os.path.abspath(__file__))
-        self.LOGGER = common_utils.HtmlLogger("MAIN_LOG", self.DIR_PATH)
+        self.DIR_PATH = os.path.dirname(os.path.abspath(__file__))  # адрес корня проекта
+        self.LOGGER = common_utils.HtmlLogger("MAIN_LOG", self.DIR_PATH)  # основной лог (хотим, чтоб сохранялся в папке проекта)
 
         # датасет
         self.DATA = Dataset()
 
+        # --------константы, управляющие обучением----------
+        self.PIC_SIDE = 105
+        self.CONTRAST_SAMPLE_LEN_FOR_STAT = 200  # размер контрасной выборки для заполения статистики для некотрогос события
+
+        # для процесса распознавания:
+        self.GROW_MAX = 8  # при росте реализации столько можно отрастить вариантов события для данного ростка
+        self.SURVIVIVING_MAX = 12  # сколько оставлять реализаций в каждом поколении
 
 GLOBALS = Globals()
 

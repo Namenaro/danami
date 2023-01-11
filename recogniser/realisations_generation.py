@@ -45,3 +45,6 @@ class BasicGenerationSorted:
 
     def __len__(self):
         return len(self.entries)
+
+    def get_best_realisation(self):
+        return self.entries[0]
