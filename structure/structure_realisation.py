@@ -21,5 +21,3 @@ class StructureRealisation:
 
 
         return local_id или None
-
-    def get_event_realisation_by
