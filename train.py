@@ -1,36 +1,30 @@
-from globals import DATA
+from globals import GLOBALS
 from cogmap import Cogmap
 from event import EventRealisation, EventMemory
 from structure import structure_realisation, structure_memory
 from grower import init_struct, grow_step
 from common_utils import HtmlLogger
 from evaluator import eval_user_properties_of_struct
+from grower import GrowStep
+from globals import GLOBALS
 
 import matplotlib.pyplot as plt
 
 
 def train(class_num, max_epochs=10):
-    DATA.reset_class_num(class_num)
-    struct = init_struct()
+    #TODO завести тут логгер, который в реальном времени будет логировать историю обучения: f1, win_quality_difference
+    GLOBALS.DATA.reset_class_num(class_num)
 
-    f1_history = []
-    while True:
-        grow_step(struct)
-        F1 = eval_user_properties_of_struct(struct)
-        f1_history.append(F1)
+    etalon_pic = GLOBALS.DATA.get_etalon()
+    cogmap = Cogmap(etalon_pic)
 
-        print("F1 = " + str(F1) + "-------------------------------------------------------------------------------")
-        if F1 > 0.8:
-            break
-        if len(f1_history) == max_epochs:
-            break
+    struct, master_realisation = init_struct(cogmap)
 
-    # лог:
-    train_logger = HtmlLogger("TRAIN_LOG")
-    fig, axs = plt.subplots()
-    train_logger.add_text("f1_history:")
-    axs.plot(f1_history)
-    train_logger.add_fig(fig)
+    grow_engine = GrowStep(struct, master_realisation, cogmap)
+    for i in range(max_epochs):
+        grow_engine.grow_step()
+        # логировать в глобальный лог результаты grow_step:
+        # 1) grow_engine.stat_object 2)grow_engine.structure
 
 
 train(201)

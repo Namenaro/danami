@@ -17,3 +17,7 @@ class StructureMemory:
 
     def get_info_about_event(self, global_event_id):
         return  LUE_id, mass, parent_global_id, u_from_parent
+
+    def add_new_event(self, event_memory, u_from_parent):
+        global_id = GLOBALS.GLOBAL_IDS_GEN.generate_id()
+        #TODO

@@ -1,1 +1,3 @@
 from samplers.one_event_sampler import fill_event_memory_naive
+from samplers.sampler_top import sample_top
+from samplers.sampler_structure import sample_struct
