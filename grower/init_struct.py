@@ -17,5 +17,6 @@ def init_struct(cogmap):
     struct.set_first_event(event_memory)
 
     # создаем мастер-реализацию
-    ...
+    master_realisation = StructureRealisation()
+    master_realisation.add_new_check_result(global_id=struct.get_first_event_id(), id_in_cogmap=id_in_cogmap)
     return struct, master_realisation

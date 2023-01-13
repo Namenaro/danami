@@ -43,3 +43,10 @@ class EventMemory:
     def eval_LUE(self):
         e = 1 - self.param_mass.get_probability(real_value=1)
         return e
+
+    # Геттеры-------------------------------------
+    def get_mass(self):
+        return self.param_mass.expected_value
+
+    def get_LUE(self):
+        return self.LUE

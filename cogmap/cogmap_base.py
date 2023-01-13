@@ -2,6 +2,9 @@ from event import EventRealisation
 from common_utils import IdsGenerator
 from cogmap.LUE_rule import LUERule
 from cogmap.utils import *
+
+from bisect import insort
+from collections import namedtuple
 # Обьект-сцена, хранит информацию какие типы точек 2-го порядка найдены и кто с кем слинкован одной змейкой
 
 # ожидает на вход картинки, бинаризованные так: 1 редкое событие, 0 - фон (частое)
@@ -20,6 +23,7 @@ class CogmapBase:
         self.events_ids_to_realisations = {}  # {id_in_cogmap:  EventRealisation }
         self.events_ids_to_points = {}   # id_in_cogmap: Point
         self.events_links = {}  # {id_in_cogmap:  id_in_cogmap}
+        self.events_list_sorted_by_mass = []
 
         self._fill()
 
@@ -62,7 +66,7 @@ class CogmapBase:
         # регистрация событий на карте:
         # 1. регистрируем событие в точке
         if start_event_point not in  self.points_to_events_ids.keys():
-            self.points_to_events_ids[start_event_point]=[]
+            self.points_to_events_ids[start_event_point] = []
         if end_event_point not in self.points_to_events_ids.keys():
             self.points_to_events_ids[end_event_point] = []
         self.points_to_events_ids[start_event_point].append(id_of_start_in_cogmap)
@@ -79,3 +83,12 @@ class CogmapBase:
         # 4. события в точки
         self.events_ids_to_points[id_of_start_in_cogmap] = start_event_point
         self.events_ids_to_points[id_of_end_in_cogmap] = end_event_point
+
+        # 5. Сортировка по массе в порядке убывания
+        #Entry = namedtuple('Entry', ('event_realisation', 'mass'))
+        self.insert_by_mass(id_of_start_in_cogmap)
+        self.insert_by_mass(id_of_end_in_cogmap)
+
+
+    def insert_by_mass(self, id_in_cogmap):
+        insort(self.events_list_sorted_by_mass, id_in_cogmap, key=lambda x: -self.events_ids_to_realisations[x].mass)
