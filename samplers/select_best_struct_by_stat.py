@@ -1,4 +1,5 @@
+from stat_object import StatObject
 
-
-def select_best_stat_object(list_stat_objects):
-    return winner_index
+def select_best_stat_object(stat_objects):
+    index, value = max(enumerate(stat_objects), key=lambda item: item[1].F1)
+    return index
