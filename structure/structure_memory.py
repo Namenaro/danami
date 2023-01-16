@@ -27,6 +27,9 @@ class StructureMemory:
             u_from_parent = self.us_from_parent_to_child[(parent_global_id, global_event_id)]
         return LUE_id, mass, parent_global_id, u_from_parent
 
+    def get_event_memory_obj(self, global_id):
+        return self.events[global_id]
+
     def add_new_event(self, event_memory, u_from_parent, parent_global_id, is_linked_to_parent):
         global_id = GLOBALS.GLOBAL_IDS_GEN.generate_id()
         self.events[global_id] = event_memory
@@ -50,3 +53,15 @@ class StructureMemory:
         self.us_from_parent_to_child[(None, global_id)] = None
         self.recognition_order.append(global_id)
         self.events[global_id] = event_memory
+
+    def is_event_first(self, this_event_global_id):
+        if self.recognition_order[0] == this_event_global_id:
+            return True
+        return False
+
+    def get_parent_id(self, child_global_id):
+        return self.child_to_parent[child_global_id]
+
+    def get_u_from_parent(self, child_global_id):
+        global_parent_id = self.get_parent_id(child_global_id)
+        return self.us_from_parent_to_child[(global_parent_id, child_global_id)]

@@ -1,4 +1,4 @@
-from structure_memory import  StructureMemory
+from structure_memory import StructureMemory
 class StructureRealisation:
     def __init__(self):
         self.global_ids_to_locals = {}  # global_id: id_in_cogmap
@@ -7,7 +7,7 @@ class StructureRealisation:
         return len(self.global_ids_to_locals)
 
     def get_local_id_by_global(self, global_id):
-        return self.global_ids_to_locals[global_id]
+        return self.global_ids_to_locals.get(global_id, None)
 
     def get_list_of_local_ids(self):
         return list(self.global_ids_to_locals.values())
