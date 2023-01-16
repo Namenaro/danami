@@ -20,12 +20,13 @@ class Globals(Singleton):
         self.DIR_PATH = os.path.dirname(os.path.abspath(__file__))  # адрес корня проекта
         self.LOGGER = common_utils.HtmlLogger("MAIN_LOG", self.DIR_PATH)  # основной лог (хотим, чтоб сохранялся в папке проекта)
 
+        self.CONTRAST_SAMPLE_LEN_FOR_STAT = 200  # размер контрасной выборки для заполения статистики
         # датасет
-        self.DATA = Dataset()
+        self.DATA = Dataset(self.CONTRAST_SAMPLE_LEN_FOR_STAT)
 
         # --------константы, управляющие обучением----------
         self.PIC_SIDE = 105
-        self.CONTRAST_SAMPLE_LEN_FOR_STAT = 200  # размер контрасной выборки для заполения статистики для некотрогос события
+
 
         # для процесса распознавания:
         self.GROW_MAX = 8  # при росте реализации столько можно отрастить вариантов события для данного ростка

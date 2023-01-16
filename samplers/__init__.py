@@ -1,3 +1,4 @@
 from samplers.one_event_sampler import fill_event_memory_naive
 from samplers.sampler_top import sample_top
-from samplers.sampler_structure import sample_struct
+from samplers.stat_object import StatObject
+from samplers.select_best_struct_by_stat import select_best_stat_object

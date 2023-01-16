@@ -18,6 +18,15 @@ class EventMemory:
         self.param_u_dx.set_sample(u_dxs)
         self.param_u_dy.set_sample(u_dys)
 
+    def add_realisation_to_stat(self, event_realisation, u_dx, u_dy):
+        if event_realisation is None:
+            self.param_LUE.add_value(0)
+        else:
+            self.param_LUE.add_value(1)
+            self.param_mass.add_value(event_realisation.mass)
+            self.param_u_dx.add_value(u_dx)
+            self.param_u_dy.add_value(u_dy)
+
     def eval_realisation(self, event_realisation, u_dx, u_dy):
         e = self.eval_mass(event_realisation.mass) + \
             self.eval_u_dx(u_dx) + \

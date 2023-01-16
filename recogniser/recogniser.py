@@ -29,27 +29,6 @@ class RecogniserEngine:
         # если последнее оказалось пусто возвращаем лучшее с предпоследнего (оно всегда есть и непусто)
         return self.generations_list[-2].get_best_realisation()
 
-    def recognize_with_top(self, top_for_struct):  # возвращает лучший экземпляр структуры + событие по экспериментальному описанию (т.е. оно без энергии)
-        best_realisation = self.recognise()
-        if len(best_realisation) != len(self.structure):
-            return None
-        # если оно линковано к родителю, то определяется однозначным образом
-        local_parent_id = best_realisation.get_local_id_by_global(top_for_struct.global_parent_id)
-        if top_for_struct.is_linked_to_parent:
-            linked_event_id_in_cogmap = self.cogmap.get_linked_event_id(local_parent_id)
-            return linked_event_id_in_cogmap
-
-        # иначе ищем ближайшего с нужным LUE_id
-
-        point_of_parent= self.cogmap.get_point_by_event_id(local_parent_id)
-        predicted_point = point_of_parent + top_for_struct.u_from_parent
-        local_events_ids_list = self.cogmap.find_events_around_point_by_LUE(point=predicted_point,
-                                                                            LUE=top_for_struct.LUE_id,
-                                                                            wanted_num_events=1,
-                                                                            exlusions=best_realisation.get_list_of_local_ids())
-        return best_realisation, local_events_ids_list[0]
-
-
 
     # служебные методы----------------------------------------------
     def _init_first_generation(self):

@@ -16,7 +16,7 @@ def binarise_img(pic):
 
 
 class Dataset:
-    def __init__(self, train_len=10, class_num=None):
+    def __init__(self, contast_sample_len, train_len=10, class_num=None):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(dir_path, './data_om')
         self.ominset = datasets.Omniglot(root=path, download=True, transform=None)
@@ -25,6 +25,7 @@ class Dataset:
 
         self.class_pics = None
         self.contrast_cogmaps = None
+        self.contast_sample_len = contast_sample_len
 
 
     def reset_class_num(self, new_class_num):
@@ -64,9 +65,9 @@ class Dataset:
                 class_pics.append(binarise_img(self.ominset[i][0]))
         return class_pics
 
-    def get_contrast_cogmaps(self, sample_size=None):
+    def get_contrast_cogmaps(self):
         if self.contrast_cogmaps is None:
-            contrast_pics = self.get_contrast_pics(sample_size)
+            contrast_pics = self.get_contrast_pics(self.contast_sample_len)
             self.contrast_cogmaps=[]
             for pic in contrast_pics:
                 self.contrast_cogmaps.append(Cogmap(pic))

@@ -1,7 +1,10 @@
 class EventRealisation:
-    def __init__(self, zmeika_points, LUE):
+    def __init__(self, zmeika_points, LUE, mass=None):
         # данные по внутренней структуре события
-        self.mass = len(zmeika_points)
+        if mass is not None:
+            self.mass = mass
+        else:
+            self.mass = len(zmeika_points)
         self.LUE = LUE
 
         self.zmeika_points = zmeika_points

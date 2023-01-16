@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 
 class Hist:
-    def __init__(self, sample):
-        self.sample = sample
+    def __init__(self, sample=None):
+        self.sample = []
+        if sample is not None:
+            self.sample = sample
 
     def get_probability_of_event(self, real_value, predicted_value):
         # Считаем все образцы, которые попадают в событие
@@ -22,7 +24,9 @@ class Hist:
 
 class BinaryHist:
     def __init__(self, sample):
-        self.sample = sample
+        self.sample = []
+        if sample is not None:
+            self.sample = sample
 
     def get_probability_of_event(self, real_binary_value):
         ones_mass = sum(self.sample)/len(self.sample)

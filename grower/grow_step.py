@@ -1,5 +1,6 @@
 from structure import StructureTop, StructureMemory, StructureRealisation
-from samplers import sample_top, sample_struct
+from samplers import sample_top, StatObject, select_best_stat_object
+
 
 from copy import deepcopy
 
@@ -8,18 +9,25 @@ class GrowStep:
     def __init__(self, structure, master_realisation, master_cogmap):
         self.structure = structure
         self.master_realisation = master_realisation
-        self.stat_object = sample_struct(structure)
+        self.stat_object = StatObject(structure)
+        self.stat_object.fill()
+
         self.master_cogmap = master_cogmap
 
+
     def grow_step(self):
-        list_structure_tops = self.select_forward_candidates(wanted_num_candidates=2)
+        wanted_num_candidates = 2
+        list_structure_tops = self.select_forward_candidates(wanted_num_candidates)
         list_candidate_structures = []
-        for structure_top in list_structure_tops:
-            event_memory = sample_top(self.structure, structure_top)
+
+        event_memory_list = sample_top(self.structure, list_structure_tops)
+        for i in range(len(event_memory_list)):
+            event_memory = event_memory_list[i]
             new_structure = deepcopy(self.structure)
-            new_structure.add_new_event(event_memory, u_from_parent=structure_top.u_from_parent,
-                                        parent_global_id=structure_top.global_parent_id,
-                                        is_linked_to_parent=structure_top.is_linked_to_parent)
+            new_structure.add_new_event(event_memory, u_from_parent=list_structure_tops[i].u_from_parent,
+                                        parent_global_id=list_structure_tops[i].global_parent_id,
+                                        is_linked_to_parent=list_structure_tops[i].is_linked_to_parent
+                                        )
 
         winner_structure, stat_object = self.select_winner_structure(list_candidate_structures)
         self.structure = winner_structure
@@ -34,6 +42,13 @@ class GrowStep:
         return best_ids
 
     def select_winner_structure(self, list_structures):
-        # заполняем статистический объект с полной инфой о структуре
+        # заполняем статистику по всем сравниваемым структурам:
+        stat_objects = []
+        for struct_memory in list_structures:
+            stat_object = StatObject(struct_memory)
+            stat_object.fill()
+            stat_objects.append(stat_object)
+
         # делаем решение, какая структура самая лучшая
-        return winner_structure, stat_object
+        winner_index = select_best_stat_object(stat_objects)
+        return list_structures[winner_index], stat_objects[winner_index]
