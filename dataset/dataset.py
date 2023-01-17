@@ -16,38 +16,58 @@ def binarise_img(pic):
 
 
 class Dataset:
-    def __init__(self, contast_sample_len, train_len=10, class_num=None):
+    def __init__(self, contast_sample_len, train_len=10, contrast_test_len=50, class_num=None):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(dir_path, './data_om')
         self.ominset = datasets.Omniglot(root=path, download=True, transform=None)
-        self.train_len = train_len
+
+        self.TRAIN_TRUE_LEN = train_len
+        self.TRAIN_CONTRAST_LEN = contast_sample_len
+        self.TEST_CONTRAST_LEN = contrast_test_len
+
         self.class_num = class_num
 
-        self.class_pics = None
-        self.contrast_cogmaps = None
-        self.contast_sample_len = contast_sample_len
+        self.contrast_cogmaps_test = None
+        self.contrast_cogmaps_TRAIN = None
+        self.true_cogmaps_test = None
+        self.true_cogmaps_TRAIN = None
+
+        self.etalon_cogmap = None
+
+    # ------- интерфейс к датасету------------------
+    def get_TRUE_test(self):
+        return self.true_cogmaps_test
+
+    def get_TRUE_train(self):
+        return self.true_cogmaps_TRAIN
+
+    def get_CONTRAST_test(self):
+        return self.contrast_cogmaps_test
+
+    def get_CONTRAST_train(self):
+        return self.contrast_cogmaps_TRAIN
+
 
 
     def reset_class_num(self, new_class_num):
         self.class_num = new_class_num
-        self.class_pics = None
-        self.contrast_cogmaps = None
 
-    def get_etalon(self):
-        if self.class_pics is None:
-            self.class_pics = self.get_all_pics_for_class(self.class_num)
-        return self.class_pics[0]
+        class_pics = self.get_all_pics_for_class(self.class_num)
+        etalon_pic = class_pics[0]
+        train_true_pics = class_pics[1:self.TRAIN_TRUE_LEN]
+        test_true_pics = class_pics[self.TRAIN_TRUE_LEN:]
 
-    def get_train(self):
-        if self.class_pics is None:
-            self.class_pics = self.get_all_pics_for_class(self.class_num)
-        return self.class_pics[1:self.train_len]
+        contrast_train_pics = self.get_contrast_pics(sample_size=self.TRAIN_CONTRAST_LEN)
+        contrast_test_pics = self.get_contrast_pics(sample_size=self.TRAIN_CONTRAST_LEN)
 
-    def get_test(self):
-        if self.class_pics is None:
-            self.class_pics = self.get_all_pics_for_class(self.class_num)
-        return self.class_pics[self.train_len:]
+        self.contrast_cogmaps_test = self.get_cogmaps_for_pics(contrast_test_pics)
+        self.contrast_cogmaps_TRAIN = self.get_cogmaps_for_pics(contrast_train_pics)
+        self.true_cogmaps_test = self.get_cogmaps_for_pics(test_true_pics)
+        self.true_cogmaps_TRAIN = self.get_cogmaps_for_pics(train_true_pics)
 
+        self.etalon_cogmap = Cogmap(etalon_pic)
+
+    # ------- служебное------------------
     def get_contrast_pics(self, sample_size):
         contrast = []
         while True:
@@ -65,10 +85,10 @@ class Dataset:
                 class_pics.append(binarise_img(self.ominset[i][0]))
         return class_pics
 
-    def get_contrast_cogmaps(self):
-        if self.contrast_cogmaps is None:
-            contrast_pics = self.get_contrast_pics(self.contast_sample_len)
-            self.contrast_cogmaps=[]
-            for pic in contrast_pics:
-                self.contrast_cogmaps.append(Cogmap(pic))
-        return self.contrast_cogmaps
+
+    def get_cogmaps_for_pics(self, pics):
+        cogmaps = []
+        for pic in pics:
+            cogmaps.append(Cogmap(pic))
+        return cogmaps
+
