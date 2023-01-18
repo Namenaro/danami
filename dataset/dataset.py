@@ -34,6 +34,9 @@ class Dataset:
 
         self.etalon_cogmap = None
 
+        if class_num is not None:
+            self.reset_class_num(class_num)
+
     # ------- интерфейс к датасету------------------
     def get_TRUE_test(self):
         return self.true_cogmaps_test
@@ -47,7 +50,8 @@ class Dataset:
     def get_CONTRAST_train(self):
         return self.contrast_cogmaps_TRAIN
 
-
+    def get_etalon_cogmap(self):
+        return self.etalon_cogmap
 
     def reset_class_num(self, new_class_num):
         self.class_num = new_class_num

@@ -15,8 +15,7 @@ def train(class_num, max_epochs=10):
     #TODO завести тут логгер, который в реальном времени будет логировать историю обучения: f1, win_quality_difference
     GLOBALS.DATA.reset_class_num(class_num)
 
-    etalon_pic = GLOBALS.DATA.get_etalon()
-    cogmap = Cogmap(etalon_pic)
+    cogmap = GLOBALS.DATA.get_etalon_cogmap()
 
     struct, master_realisation = init_struct(cogmap)
 
