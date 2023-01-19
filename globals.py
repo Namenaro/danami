@@ -1,4 +1,5 @@
 import common_utils
+from  common_utils import HtmlLogger as Logger
 from dataset import Dataset
 
 import os.path
@@ -22,11 +23,20 @@ class Globals(Singleton):
 
         self.GLOBAL_IDS_GEN = common_utils.IdsGenerator()  # генетатор уникальных имен для событий, из которых строятся структуры
         self.DIR_PATH = os.path.dirname(os.path.abspath(__file__))  # адрес корня проекта
-        self.LOGGER = common_utils.HtmlLogger("MAIN_LOG", self.DIR_PATH)  # основной лог (хотим, чтоб сохранялся в папке проекта)
 
-        self.CONTRAST_SAMPLE_LEN_FOR_STAT = 200  # размер контрасной выборки для заполения статистики
+        #логгеры
+        self.LOG_GROUTH = Logger("LOG_GROUTH", self.DIR_PATH)  # шаги роста структуры
+        self.LOG_GROUTH.add_text("Лог как росла структура со 2 шага, пошагово ")
+
+        self.LOG_CURVE = Logger("LOG_CURVE", self.DIR_PATH)  # кривая обучения
+        self.LOG_CURVE.add_text("Лог кривая обучения ")
+
+        self.LOG_RECOG = Logger("LOG_RECOG_PROCESS", self.DIR_PATH)
+        self.LOG_RECOG.add_text("Процесс распознавания (рост ростков) ")
+
         # датасет
-        self.DATA = Dataset(self.CONTRAST_SAMPLE_LEN_FOR_STAT)
+        self.TRAIN_CONTRAST_LEN = 200
+        self.DATA = Dataset(self.TRAIN_CONTRAST_LEN)
 
         # --------константы, управляющие обучением----------
         self.PIC_SIDE = 105

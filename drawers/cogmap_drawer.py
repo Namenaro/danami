@@ -12,7 +12,7 @@ def draw_cogmap(cogmap, logger):
         draw_event_realisation(cogmap.pic, axs[i], realisation, id_in_cogmap, point)
         i += 1
     logger.add_fig(fig)
-    logger.save()
+
 
 def draw_cogmap1(cogmap, logger):
     fig, axs = plt.subplots(figsize=(8, 8), dpi=60)
@@ -21,11 +21,10 @@ def draw_cogmap1(cogmap, logger):
     axs.imshow(cogmap.pic, cmap=cm, vmin=0, vmax=1)
 
     for id_in_cogmap, point in cogmap.events_ids_to_points.items():
-       axs.scatter(point.x, point.y, s=200)
-
+        axs.scatter(point.x, point.y, s=200)
 
     logger.add_fig(fig)
-    logger.save()
+
 
 
 def draw_event_realisation(back_pic_binary, ax, realisation, id_in_cogmap, point):

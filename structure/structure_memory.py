@@ -16,6 +16,9 @@ class StructureMemory:
     def __len__(self):
         return len(self.recognition_order)
 
+    def get_all_global_ids(self):
+        return self.recognition_order
+
     def get_info_about_event(self, global_event_id):
         event_memory = self.events[global_event_id]
         LUE_id = event_memory.get_LUE()

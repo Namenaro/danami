@@ -19,3 +19,8 @@ class StructColorator:
     def add_several_ids(self, ids_list):
         for global_id in ids_list:
             self.add_new_id(global_id)
+
+    def update(self, ids_list):
+        for new_id in ids_list:
+            if new_id not in self.ids_to_colors.keys():
+                self.add_new_id(new_id)

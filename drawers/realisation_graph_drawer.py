@@ -1,7 +1,7 @@
 from structure import StructureRealisation, StructureMemory
 from cogmap import Cogmap
 from event import EventRealisation
-from structure.drawers import colorator
+from drawers.colorator import StructColorator
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -39,3 +39,10 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
                                              mutation_scale=10)
             ax.add_patch(arrow)
 
+
+
+def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, logger):
+    # создаем рядок и в лог
+
+def draw_several_realisations_different_cogmaps(colorator, realisations_list, cogmaps_list, logger):
+    # создаем рядок и в лог

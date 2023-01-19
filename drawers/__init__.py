@@ -1,0 +1,6 @@
+from drawers.cogmap_drawer import draw_cogmap1, draw_cogmap
+from drawers.struct_recognition_examples import draw_examples_recognition
+from drawers.colorator import StructColorator
+from drawers.recognition_process_drawer import draw_process_precognition_on_cogmap
+from drawers.realisation_graph_drawer import draw_realisation_on_ax,draw_several_realisations_same_cogmap, draw_several_realisations_different_cogmaps
+from drawers.stat_obj_drawer import draw_stat_object

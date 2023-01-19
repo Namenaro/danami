@@ -1,6 +1,7 @@
 from globals import GLOBALS
 from cogmap import *
 from common_utils import *
+from drawers import draw_cogmap, draw_cogmap1
 
 
 def test_cogmap(log_name="TEST_COGMAP"):
@@ -13,4 +14,6 @@ def test_cogmap(log_name="TEST_COGMAP"):
     draw_cogmap(cogmap, logger)
     draw_cogmap1(cogmap, logger)
 
-test_cogmap()
+
+if __name__ == "__main__":
+    test_cogmap()
