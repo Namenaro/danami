@@ -1,6 +1,7 @@
 from event.parameter import Parameter
 from event.event_realisation import EventRealisation
 
+
 class EventMemory:
     def __init__(self, event_realisation):
         self.LUE = event_realisation.LUE
@@ -38,7 +39,7 @@ class EventMemory:
     # оценки вклада в нетривиальность от каждого параметра события
     # Эти методы вызываются только как служебные в функции eval_realisation
     def eval_mass(self, real_mass):
-        e = 1 - self.param_mass.get_probability(real_mass, self.predicted_value)
+        e = 1 - self.param_mass.get_probability(real_mass)
         return e
 
     def eval_u_dx(self, real_u_dx):

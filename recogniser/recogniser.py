@@ -11,6 +11,7 @@ class RecogniserEngine:
         self.structure = structure
         self.cogmap = cogmap
         self.generations_list = []
+        self.win_quality = None
 
     def recognise(self): # возвращает один "лучший" экземпляр структуры (не обязательно доросший до конца)
         self._init_first_generation()
@@ -20,15 +21,27 @@ class RecogniserEngine:
         for i in range(1, len(self.structure)):
             # если пусто  предыдущее , надо вернуть лушую реализуацию из предыдущего поколения
             if self.generations_list[-1].is_empty():
+                self.win_quality = self.generations_list[-1].get_win_quality()
                 return self.generations_list[-1].get_best_realisation()
             self._create_next_generaion()
 
         # если после всех шагов роста последнее поколение не пусто, то выозвращаем его лучший экземпляр
         if not self.generations_list[-1].is_empty():
+            self.win_quality = self.generations_list[-1].get_win_quality()
             return self.generations_list[-1].get_best_realisation()
+
         # если последнее оказалось пусто возвращаем лучшее с предпоследнего (оно всегда есть и непусто)
+        self.win_quality = self.generations_list[-2].get_win_quality()
         return self.generations_list[-2].get_best_realisation()
 
+    def get_win_quality(self):
+        return self.win_quality
+
+    def get_all_win_qualities(self):
+        win_qualities = []
+        for generation in self.generations_list:
+            win_qualities.append(generation.get_win_quality())
+        return win_qualities
 
     # служебные методы----------------------------------------------
     def _init_first_generation(self):
@@ -71,6 +84,5 @@ class RecogniserEngine:
             child_realisation.add_new_event_realisation(local_event_id, prediction.global_event_id)
             realisations_list.append(child_realisation)
         return realisations_list
-
 
 

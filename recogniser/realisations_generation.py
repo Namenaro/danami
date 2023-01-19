@@ -2,6 +2,7 @@ from structure import StructureRealisation, StructureMemory
 from cogmap import Cogmap
 from evaluator import eval_realisation_non_triviality
 from event_predictor import Prediction, predict_for_next_event
+from evaluator import  measure_win_quality
 
 from collections import namedtuple
 from bisect import insort
@@ -48,3 +49,20 @@ class BasicGenerationSorted:
 
     def get_best_realisation(self):
         return self.entries[0]
+
+    def get_all_realisations_sorted(self):
+        all_realisations_sorted = []
+        for entry in self.entries:
+            all_realisations_sorted.append(entry.realisation)
+        return all_realisations_sorted
+
+    def get_all_energies_sorted(self):
+        all_energies_sorted = []
+        for entry in self.entries:
+            all_energies_sorted.append(entry.non_triviality)
+        return all_energies_sorted
+
+    def get_win_quality(self):
+        return measure_win_quality(self.get_all_energies_sorted())
+
+

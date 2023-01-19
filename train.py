@@ -42,6 +42,7 @@ def LOG_every_step(structure, master_realisation, master_cogmap, colorator, stat
     fig, ax = plt.subplots(figsize=(8, 8), dpi=60)
     draw_realisation_on_ax(master_realisation, colorator, structure, master_cogmap, ax)
     logger_recognition_process.add_fig(fig)
+
     logger_recognition_process.add_text("Процесс распознавания на некоторой картинке:")
     test_cogmap = GLOBALS.DATA.get_TRUE_test()[0]
     draw_process_precognition_on_cogmap(colorator, structure, test_cogmap, logger_recognition_process)
@@ -86,9 +87,9 @@ def train(class_num, max_epochs=10):
 
 if __name__ == "__main__":
     print("learning started...")
-    class_num = 201
-    GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_num))
-    train(class_num)
+    class_number = 201
+    GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_number))
+    train(class_number)
 
 
 

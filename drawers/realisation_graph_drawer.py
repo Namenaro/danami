@@ -7,10 +7,11 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
 
-def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogmap, ax):
+def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogmap, ax, title=None):
     cm = plt.get_cmap('seismic')
     ax.imshow(cogmap.pic, cmap=cm, vmin=0, vmax=1)
-
+    if title is not None:
+        ax.set_title(str(title))
     # рисуем сами события
     for global_id, id_in_cogmap in struct_realisation.global_ids_to_locals.items():
         event_realisation = cogmap.get_event_by_id(id_in_cogmap)
@@ -41,8 +42,31 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
 
 
 
-def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, logger):
+def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, logger, structure, titles = None):
     # создаем рядок и в лог
+    num_axs = len(realisations_list)
+    fig, axs = plt.subplots(1, num_axs, figsize=(8 * num_axs, 8), dpi=60)
+    for i in range(num_axs):
+        realisation = realisations_list[i]
+        if realisation is None:
+            continue
+        if titles is not None:
+            title = str(titles[i])
+        else:
+            title = None
+        draw_realisation_on_ax(realisation, colorator, structure, cogmap, axs[i], title)
+    logger.add_fig(fig)
 
-def draw_several_realisations_different_cogmaps(colorator, realisations_list, cogmaps_list, logger):
+
+def draw_several_realisations_different_cogmaps(colorator, realisations_list, cogmaps_list, logger, structure, titles=None):
     # создаем рядок и в лог
+    num_axs = len(realisations_list)
+    fig, axs = plt.subplots(1, num_axs, figsize=(8 * num_axs, 8), dpi=60)
+    for i in range(num_axs):
+        realisation = realisations_list[i]
+        if titles is not None:
+            title = str(titles[i])
+        else:
+            title = None
+        draw_realisation_on_ax(realisation, colorator, structure, cogmaps_list[i], axs[i], title)
+    logger.add_fig(fig)
