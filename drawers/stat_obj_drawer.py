@@ -14,7 +14,7 @@ def draw_stat_object(stat_object, logger):
     axs[0].set_ylabel("Кол-во картинок")
 
     # Таким же образом рисуем в одних осях гистограмму качетсва победы лучшего финального ростка на целевых и контрастных
-    axs[1].set_title("Качество победы лучшего ростка для ихображения")
+    axs[1].set_title("Качество победы")
     axs[1].hist(stat_object.get_win_qualities_true_class(), color='green', label='Целевые', alpha=0.5)
     axs[1].hist(stat_object.get_win_qualities_contrast(), color='red', label='Контрастные', alpha=0.5)
     axs[1].set_xlabel("Значения качества победы")

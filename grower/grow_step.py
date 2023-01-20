@@ -20,6 +20,8 @@ class GrowStep:
     def grow_step(self):
         WANTED_NUM_CANDIDATES = 3
         list_selected_local_ids = self.select_forward_candidates(WANTED_NUM_CANDIDATES)
+        if len(list_selected_local_ids) == 0:
+            return False
         list_structure_tops = [self.cogmap_event_to_top_obj(local_event_id)
                                for local_event_id in list_selected_local_ids]
         list_candidate_structures = []
@@ -35,7 +37,8 @@ class GrowStep:
                                         is_linked_to_parent=list_structure_tops[i].is_linked_to_parent
                                         )
             list_candidate_structures.append(new_structure)
-
+        if len(list_candidate_structures)==0:
+            return False
         winner_index, stat_object = self.select_winner_structure(list_candidate_structures)
         print("Структура победитель выбрана: номер в списке="+ str(winner_index))
         self.structure = list_candidate_structures[winner_index]
@@ -46,6 +49,7 @@ class GrowStep:
         winner_global_id = self.structure.recognition_order[-1]
         self.master_realisation.add_new_check_result(global_id=winner_global_id, id_in_cogmap=winner_local_id)
 
+        return True
         ################################## relax_structure (self.structure, self.stat_object)
 
 

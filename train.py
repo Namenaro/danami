@@ -71,7 +71,10 @@ def train(class_num, max_epochs=10):
     grow_engine = GrowStep(struct, master_realisation, cogmap)
     for step_num in range(1, max_epochs):
         print("Learning: step " + str(step_num) + " started...")
-        grow_engine.grow_step()
+        success = grow_engine.grow_step()
+        if not success:
+            print("Learninng ended because master-realisation can not grow further")
+            break
         # -----------блок визуального логирования--------------
         colorator.update(grow_engine.structure.get_all_global_ids())
 
@@ -81,7 +84,7 @@ def train(class_num, max_epochs=10):
 
         F1_history.append(grow_engine.stat_object.get_F1())
         # -----------------------------------------------------
-
+    print("Learning ended fully!")
     LOG_learning_curve(F1_history)
 
 

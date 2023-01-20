@@ -17,6 +17,8 @@ def draw_process_precognition_on_cogmap(colorator, structure, cogmap, logger):
 
     for sorted_generation in engine.generations_list:
         realisations_sorted = sorted_generation.get_all_realisations_sorted()
+        if len(realisations_sorted)==0:
+            break
         energies_sorted = sorted_generation.get_all_energies_sorted()
         titles = [str(energy) for energy in energies_sorted]
         draw_several_realisations_same_cogmap(colorator, realisations_sorted, cogmap, logger, structure,titles)

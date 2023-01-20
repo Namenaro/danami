@@ -22,8 +22,8 @@ class RecogniserEngine:
         for i in range(1, len(self.structure)):
             # если пусто  предыдущее , надо вернуть лушую реализуацию из предыдущего поколения
             if self.generations_list[-1].is_empty():
-                self.win_quality = self.generations_list[-1].get_win_quality()
-                return self.generations_list[-1].get_best_realisation()
+                self.win_quality = self.generations_list[-2].get_win_quality()
+                return self.generations_list[-2].get_best_realisation()
             self._create_next_generaion()
 
         # если после всех шагов роста последнее поколение не пусто, то выозвращаем его лучший экземпляр
