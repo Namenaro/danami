@@ -1,6 +1,7 @@
 from .cogmap_base import CogmapBase
 from .utils import *
 
+
 # Класс, реализующий интерфейс к ког.карте.
 # Функции, которые ее заполняют, вынесены в базовый класс.
 
@@ -11,7 +12,7 @@ class Cogmap(CogmapBase):
     def find_events_around_point_by_LUE(self, point, LUE, wanted_num_events, exlusions):
         # эти константы просто для того, чтоб примитивно ограничить комбинаторный взрыв, если он будет (не должен!)
         MAX_EVENTS = wanted_num_events
-        MAX_RADIUS = 50
+        MAX_RADIUS = self.pic.shape[0]
         result_ids_in_cogmap = []
         radius = -1
         while True:
@@ -55,3 +56,6 @@ class Cogmap(CogmapBase):
             return approved_ids[:n]
         return approved_ids
 
+    def __str__(self):
+        res = "Cogmap " + str(self.events_list_sorted_by_mass)
+        return res

@@ -1,4 +1,5 @@
 from structure.structure_memory import StructureMemory
+
 class StructureRealisation:
     def __init__(self):
         self.global_ids_to_locals = {}  # global_id: id_in_cogmap
@@ -23,3 +24,6 @@ class StructureRealisation:
 
     def add_new_check_result(self, global_id, id_in_cogmap):
         self.global_ids_to_locals[global_id] = id_in_cogmap
+
+    def __str__(self):
+        return "StructRealis: global_ids_to_locals = " + str(self.global_ids_to_locals)

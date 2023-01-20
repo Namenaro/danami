@@ -12,6 +12,20 @@ class EventMemory:
         self.param_u_dx = Parameter(expected_value=0)
         self.param_u_dy = Parameter(expected_value=0)
 
+    def __str__(self):
+        res = "LUE= " + str(self.LUE)
+        #res += ", p_LUE " + str(self.param_LUE)
+        res += ", p_mass " + str(self.param_mass)
+        #res += ", p_u_dx " + str(self.param_u_dx)
+        #res += ", p_u_dy " + str(self.param_u_dy)
+        return res
+
+    def has_empty_hists(self):
+        return self.param_LUE.has_empty_hist() or \
+               self.param_mass.has_empty_hist() or \
+               self.param_u_dx.has_empty_hist() or \
+               self.param_u_dy.has_empty_hist()
+
     # интерфейсные методы--------------------------------
     def set_samples(self, masses=None, u_dxs=None, u_dys=None, LUE_s=None):
         self.param_LUE.set_sample(LUE_s)

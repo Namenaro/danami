@@ -16,6 +16,15 @@ class StructureMemory:
     def __len__(self):
         return len(self.recognition_order)
 
+    def __str__(self):
+        res = "Struct-" + str(len(self.recognition_order))
+        res += "IDS: " + str(self.recognition_order)
+        for global_id, event_memory in self.events.items():
+            res += "-----ID=" + str(global_id) + ": " + str(event_memory)
+        #res += ", order=" + str(self.recognition_order)
+        #res += ", child_to_parent = " + str(self.child_to_parent)
+        return res
+
     def get_all_global_ids(self):
         return self.recognition_order
 

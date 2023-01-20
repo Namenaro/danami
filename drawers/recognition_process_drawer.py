@@ -6,7 +6,7 @@ from drawers.realisation_graph_drawer import draw_several_realisations_same_cogm
 import matplotlib.pyplot as plt
 
 
-def draw_process_precognition_on_cogmap( colorator,structure, cogmap, logger):
+def draw_process_precognition_on_cogmap(colorator, structure, cogmap, logger):
     # для каждого поколения
     # рисуем горизонтальный рядочек вошедших в него реализаций
     # каждый рядочек это fig, добавляем ее в логгер

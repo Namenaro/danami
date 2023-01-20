@@ -14,6 +14,7 @@ class RecogniserEngine:
         self.win_quality = None
 
     def recognise(self): # возвращает один "лучший" экземпляр структуры (не обязательно доросший до конца)
+        GLOBALS.LOG_CURVE.add_text(str(self.structure))
         self._init_first_generation()
         if self.generations_list[0].is_empty():
             return None
@@ -67,8 +68,9 @@ class RecogniserEngine:
         prediction = predict_for_next_event(self.structure, realisation, self.cogmap)
 
         # если уже есть связанное событие на карте, то результат распознавания однозначен
-        target_local_event_id = realisation.try_get_event_check_result_by_linked_event(self.structure, prediction.global_event_id)
-        if target_local_event_id is not None:
+        linked_parent_local_event_id = realisation.try_get_event_check_result_by_linked_event(self.structure, prediction.global_event_id)
+        if linked_parent_local_event_id is not None:
+            target_local_event_id = self.cogmap.get_linked_event_id(linked_parent_local_event_id)
             child_realisation = deepcopy(realisation)
             child_realisation.add_new_check_result(global_id=prediction.global_event_id, id_in_cogmap=target_local_event_id)
             return [child_realisation]

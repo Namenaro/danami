@@ -21,6 +21,14 @@ class Hist:
         plt.hist(self.sample, density=True, edgecolor="black")
         plt.show()
 
+    def __str__(self):
+        return "Hist " + str(self.sample)
+
+    def __len__(self):
+        if self.sample is not None:
+            return len(self.sample)
+        return 0
+
 
 class BinaryHist:
     def __init__(self, sample):
@@ -40,3 +48,11 @@ class BinaryHist:
     def show_hist(self):
         plt.hist(self.sample, density=True, edgecolor="black")
         plt.show()
+
+    def __str__(self):
+        return "BinHist " + str(self.sample)
+
+    def __len__(self):
+        if self.sample is not None:
+            return len(self.sample)
+        return 0

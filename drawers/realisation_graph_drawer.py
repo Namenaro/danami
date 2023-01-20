@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 
 def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogmap, ax, title=None):
+
     cm = plt.get_cmap(GLOBALS.CMAP_NAME)
     ax.imshow(cogmap.pic, cmap=cm, vmin=0, vmax=1)
     if title is not None:
@@ -33,6 +34,8 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
 
             local_parent_id = struct_realisation.get_local_id_by_global(parent_global_id)
             local_child_id = struct_realisation.get_local_id_by_global(global_id)
+            if local_child_id is None:
+                continue
 
             child_point = cogmap.get_point_by_event_id(local_child_id)
             parent_point = cogmap.get_point_by_event_id(local_parent_id)
@@ -55,6 +58,7 @@ def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, 
             title = str(titles[i])
         else:
             title = None
+
         draw_realisation_on_ax(realisation, colorator, structure, cogmap, axs[i], title)
     logger.add_fig(fig)
 

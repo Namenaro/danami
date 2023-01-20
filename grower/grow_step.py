@@ -18,7 +18,7 @@ class GrowStep:
 
 
     def grow_step(self):
-        WANTED_NUM_CANDIDATES = 2
+        WANTED_NUM_CANDIDATES = 3
         list_selected_local_ids = self.select_forward_candidates(WANTED_NUM_CANDIDATES)
         list_structure_tops = [self.cogmap_event_to_top_obj(local_event_id)
                                for local_event_id in list_selected_local_ids]
@@ -27,6 +27,8 @@ class GrowStep:
         event_memory_list = sample_top(self.structure, list_structure_tops)
         for i in range(len(event_memory_list)):
             event_memory = event_memory_list[i]
+            if event_memory.has_empty_hists():
+                continue
             new_structure = deepcopy(self.structure)
             new_structure.add_new_event(event_memory, u_from_parent=list_structure_tops[i].u_from_parent,
                                         parent_global_id=list_structure_tops[i].global_parent_id,
@@ -35,13 +37,14 @@ class GrowStep:
             list_candidate_structures.append(new_structure)
 
         winner_index, stat_object = self.select_winner_structure(list_candidate_structures)
+        print("Структура победитель выбрана: номер в списке="+ str(winner_index))
         self.structure = list_candidate_structures[winner_index]
         self.stat_object = stat_object
 
         # наращиваем мастер-реализацию на одно событие
         winner_local_id = list_selected_local_ids[winner_index]
         winner_global_id = self.structure.recognition_order[-1]
-        self.master_realisation.add_new_check_result(winner_global_id, winner_local_id)
+        self.master_realisation.add_new_check_result(global_id=winner_global_id, id_in_cogmap=winner_local_id)
 
         ################################## relax_structure (self.structure, self.stat_object)
 

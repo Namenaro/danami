@@ -8,3 +8,7 @@ class EventRealisation:
         self.LUE = LUE
 
         self.zmeika_points = zmeika_points
+
+    def __str__(self):
+        res = "EvRealis, LUE=" + str(self.LUE)+ ", mass=" + str(self.mass)
+        return res

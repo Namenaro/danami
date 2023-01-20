@@ -19,7 +19,7 @@ def LOG_every_step(structure, master_realisation, master_cogmap, colorator, stat
     # 1. Как выглядит мастер-реализация на данном шаге
     main_log.add_line_big()
     main_log.add_text("Шаг роста " + str(step_num) + ", F1 = " + str(stat_object.get_F1()))
-    fig, ax = plt.subplots(figsize=(8, 8), dpi=60)
+    fig, ax = plt.subplots(figsize=(GLOBALS.FIGSIZE, GLOBALS.FIGSIZE), dpi=GLOBALS.DPI)
     draw_realisation_on_ax(master_realisation, colorator, structure, master_cogmap, ax)
     main_log.add_fig(fig)
 
@@ -45,6 +45,7 @@ def LOG_every_step(structure, master_realisation, master_cogmap, colorator, stat
 
     logger_recognition_process.add_text("Процесс распознавания на некоторой картинке:")
     test_cogmap = GLOBALS.DATA.get_TRUE_test()[0]
+
     draw_process_precognition_on_cogmap(colorator, structure, test_cogmap, logger_recognition_process)
     logger_recognition_process.add_line_little()
 
