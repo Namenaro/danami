@@ -27,4 +27,4 @@ def draw_process_precognition_on_cogmap( colorator,structure, cogmap, logger):
     ax.set_xlabel("Кач-во победы лучшего ростка в поколении")
     ax.set_xlabel("Номер поколения ростков")
     ax.set_title("Процесс роста качества победы победителя в каждом поколении")
-    logger.save_fig(fig)
+    logger.add_fig(fig)

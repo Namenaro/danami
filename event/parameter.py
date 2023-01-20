@@ -12,7 +12,7 @@ class Parameter:
             self.hist = Hist(sample)
 
     def get_probability(self, real_value):
-        return self.hist.get_probability_of_event(real_value, self.predicted_value)
+        return self.hist.get_probability_of_event(real_value, self.expected_value)
 
     def set_sample(self, sample):
         if sample is not None:

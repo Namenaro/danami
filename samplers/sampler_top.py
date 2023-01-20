@@ -7,21 +7,24 @@ def sample_top(structure, tops_list):
     event_memory_list = [_top_to_dammy_event_memory(top) for top in tops_list]
 
     # перебираем контрастные когмапы
-    contrast_cogmaps = GLOBALS.DATA.get_contrast_cogmaps()
+    contrast_cogmaps = GLOBALS.DATA.get_CONTRAST_train()
     for cogmap in contrast_cogmaps:
         engine = RecogniserEngine(structure, cogmap)
         best_realisation = engine.recognise()
 
-        for i in range(len(tops_list)):
-            event_local_id, event_realisation, expected_point, real_point = \
-                recognition_resume_for_top(tops_list[i], structure, best_realisation, cogmap)
-            if event_realisation is None:
-                event_memory_list[i].add_realisation_to_stat(None, u_dx=None, u_dy=None)
-            else:
-                du = real_point - expected_point
-                u_dx = du.x
-                u_dy = du.y
-                event_memory_list[i].add_realisation_to_stat(event_realisation, u_dx=u_dx, u_dy=u_dy)
+        if len(best_realisation) == len(structure):
+
+            for i in range(len(tops_list)):
+                event_local_id, event_realisation, expected_point, real_point = \
+                    recognition_resume_for_top(tops_list[i], best_realisation, cogmap)
+
+                if event_realisation is None:
+                    event_memory_list[i].add_realisation_to_stat(None, u_dx=None, u_dy=None)
+                else:
+                    du = real_point - expected_point
+                    u_dx = du.x
+                    u_dy = du.y
+                    event_memory_list[i].add_realisation_to_stat(event_realisation, u_dx=u_dx, u_dy=u_dy)
 
     return event_memory_list
 

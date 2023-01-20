@@ -39,7 +39,8 @@ class Cogmap(CogmapBase):
         return self.events_links[id_in_cogmap]
 
     def select_most_massive(self):
-        best_id = self.events_list_sorted_by_mass
+        sorted_ids_list = self.events_list_sorted_by_mass
+        best_id = sorted_ids_list[0]
         best_realisation = self.events_ids_to_realisations[best_id]
         return best_realisation, best_id
 

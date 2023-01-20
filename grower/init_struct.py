@@ -6,7 +6,7 @@ from samplers import fill_event_memory_naive
 
 
 def init_struct(cogmap):
-
+    print("Initialising structure by first event...")
     event_realisation, id_in_cogmap = cogmap.select_most_massive()
 
     event_memory = EventMemory(event_realisation)
@@ -19,4 +19,6 @@ def init_struct(cogmap):
     # создаем мастер-реализацию
     master_realisation = StructureRealisation()
     master_realisation.add_new_check_result(global_id=struct.get_first_event_id(), id_in_cogmap=id_in_cogmap)
+
+    print("Structure initialised")
     return struct, master_realisation

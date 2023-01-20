@@ -28,10 +28,10 @@ def fill_event_memory_naive(event_memory, sample_size):
 # вспомогательный метод
 def gather_best_realisation_of_event(event_memory, cogmap, point):
     # за лучший берем ближайший
-    result_ids_in_cogmap = cogmap.find_events_around_point_by_LUE(point, event_memory.LUE, wanted_num_events=1)
+    result_ids_in_cogmap = cogmap.find_events_around_point_by_LUE(point, event_memory.LUE, wanted_num_events=1, exlusions=[])
     if len(result_ids_in_cogmap)==0:
-        return None
+        return None, None
     id_in_cogmap = result_ids_in_cogmap[0]
     event_point = cogmap.get_point_by_event_id(id_in_cogmap)
-    event_realisation = cogmap.get_event_by_id(result_ids_in_cogmap)
+    event_realisation = cogmap.get_event_by_id(id_in_cogmap)
     return event_realisation, event_point

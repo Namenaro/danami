@@ -1,8 +1,8 @@
 from structure import StructureRealisation, StructureMemory
 from cogmap import Cogmap
 from evaluator import eval_realisation_non_triviality
-from event_predictor import Prediction, predict_for_next_event
-from evaluator import  measure_win_quality
+from recogniser.event_predictor import Prediction, predict_for_next_event
+from evaluator import measure_win_quality
 
 from collections import namedtuple
 from bisect import insort
@@ -25,12 +25,12 @@ class BasicGenerationSorted:
             self.entries = self.entries[:surviving_max]
 
     def init_as_first_generation(self, structure, cogmap):
-        global_node_id = structure.get_first_global_event_id()
-        prediction = structure.get_info_to_recognise_node(global_node_id)
-        for id_in_cogmap,  event_realisation in cogmap.events_ids_to_realisations:
-            if event_realisation.LUE == prediction.LUE_id:
+        global_node_id = structure.get_first_event_id()
+        LUE_id, mass, parent_global_id, u_from_parent = structure.get_info_about_event(global_node_id)
+        for id_in_cogmap,  event_realisation in cogmap.events_ids_to_realisations.items():
+            if event_realisation.LUE == LUE_id:
                 realisation = StructureRealisation()
-                realisation.add_new_event_realisation(id_in_cogmap, global_node_id)
+                realisation.add_new_check_result(global_id=global_node_id, id_in_cogmap=id_in_cogmap)
                 self.insert_new_realisation(realisation, structure, cogmap)
 
     def is_empty(self):
@@ -48,7 +48,7 @@ class BasicGenerationSorted:
         return len(self.entries)
 
     def get_best_realisation(self):
-        return self.entries[0]
+        return self.entries[0].realisation
 
     def get_all_realisations_sorted(self):
         all_realisations_sorted = []

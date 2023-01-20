@@ -2,13 +2,14 @@ from structure import StructureRealisation, StructureMemory
 from cogmap import Cogmap
 from event import EventRealisation
 from drawers.colorator import StructColorator
+from globals import GLOBALS
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
 
 def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogmap, ax, title=None):
-    cm = plt.get_cmap('seismic')
+    cm = plt.get_cmap(GLOBALS.CMAP_NAME)
     ax.imshow(cogmap.pic, cmap=cm, vmin=0, vmax=1)
     if title is not None:
         ax.set_title(str(title))
@@ -18,10 +19,10 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
         color = struct_colorator.get_color_for_id(global_id)
 
         for coord in event_realisation.zmeika_points:
-            ax.scatter(coord.x, coord.y, c=color, marker='o', alpha=0.4, s=200)
+            ax.scatter(coord.x, coord.y, c=[color], marker='o', alpha=0.4, s=200)
 
         point = cogmap.get_point_by_event_id(id_in_cogmap)
-        ax.scatter(point.x, point.y, color, alpha=0.7)
+        ax.scatter(point.x, point.y, c=[color], alpha=0.7, s=170)
 
         ax.annotate(str(global_id), (point.x, point.y))
 
@@ -45,7 +46,7 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
 def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, logger, structure, titles = None):
     # создаем рядок и в лог
     num_axs = len(realisations_list)
-    fig, axs = plt.subplots(1, num_axs, figsize=(8 * num_axs, 8), dpi=60)
+    fig, axs = plt.subplots(1, num_axs, figsize=(GLOBALS.FIGSIZE * num_axs, GLOBALS.FIGSIZE), dpi=GLOBALS.DPI)
     for i in range(num_axs):
         realisation = realisations_list[i]
         if realisation is None:
@@ -61,7 +62,7 @@ def draw_several_realisations_same_cogmap(colorator, realisations_list, cogmap, 
 def draw_several_realisations_different_cogmaps(colorator, realisations_list, cogmaps_list, logger, structure, titles=None):
     # создаем рядок и в лог
     num_axs = len(realisations_list)
-    fig, axs = plt.subplots(1, num_axs, figsize=(8 * num_axs, 8), dpi=60)
+    fig, axs = plt.subplots(1, num_axs, figsize=(GLOBALS.FIGSIZE * num_axs, GLOBALS.FIGSIZE), dpi=GLOBALS.DPI)
     for i in range(num_axs):
         realisation = realisations_list[i]
         if titles is not None:

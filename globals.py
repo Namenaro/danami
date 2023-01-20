@@ -4,6 +4,12 @@ from dataset import Dataset
 
 import os.path
 
+import random
+import numpy as np
+
+#TODO потом расфиксировать
+np.random.seed(0)
+random.seed(10)
 
 class _Singleton(type):
     """ A metaclass that creates a Singleton base class when called. """
@@ -35,16 +41,22 @@ class Globals(Singleton):
         self.LOG_RECOG.add_text("Процесс распознавания (рост ростков) ")
 
         # датасет
-        self.TRAIN_CONTRAST_LEN = 200
+        self.TRAIN_CONTRAST_LEN = 8
         self.DATA = Dataset(self.TRAIN_CONTRAST_LEN)
 
-        # --------константы, управляющие обучением----------
-        self.PIC_SIDE = 105
 
+        # --------данные по самим картинкам----------
+        self.PIC_SIDE = 105
+        self.FIGSIZE = 6
+        self.DPI = 30
+        self.CMAP_NAME = 'gray'
 
         # для процесса распознавания:
         self.GROW_MAX = 8  # при росте реализации столько можно отрастить вариантов события для данного ростка
         self.SURVIVIVING_MAX = 12  # сколько оставлять реализаций в каждом поколении
+
+        # для обучения
+        self.CONTRAST_SAMPLE_LEN_FOR_STAT = 10 # на выборке какого размера строить статитиску для события
 
 GLOBALS = Globals()
 

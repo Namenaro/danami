@@ -7,12 +7,14 @@ from copy import deepcopy
 # Считаем, что структура уже инициализирована одним или несколькими узлами
 class GrowStep:
     def __init__(self, structure, master_realisation, master_cogmap):
+        print("Initialising Grow Engine...")
         self.structure = structure
         self.master_realisation = master_realisation
         self.stat_object = StatObject(structure)
         self.stat_object.fill()
 
         self.master_cogmap = master_cogmap
+        print("Grow Engine created ")
 
 
     def grow_step(self):

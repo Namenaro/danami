@@ -10,7 +10,7 @@ def eval_realisation_non_triviality(struct_realisation, struct_memory, cogmap):
         local_id = struct_realisation.get_local_id_by_global(global_id)
         if local_id is None:
             break
-        event_realisation = cogmap.get_point_by_event_id(local_id)
+        event_realisation = cogmap.get_event_by_id(local_id)
         event_memory = struct_memory.get_event_memory_obj(global_id)
         if struct_memory.is_event_first(global_id):
             u_dx = None

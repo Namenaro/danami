@@ -60,7 +60,7 @@ def LOG_learning_curve(F1_history):
 
 def train(class_num, max_epochs=10):
     GLOBALS.DATA.reset_class_num(class_num)
-
+    print("learning started...")
     cogmap = GLOBALS.DATA.get_etalon_cogmap()
     struct, master_realisation = init_struct(cogmap)
 
@@ -69,9 +69,8 @@ def train(class_num, max_epochs=10):
 
     grow_engine = GrowStep(struct, master_realisation, cogmap)
     for step_num in range(1, max_epochs):
-
+        print("Learning: step " + str(step_num) + " started...")
         grow_engine.grow_step()
-
         # -----------блок визуального логирования--------------
         colorator.update(grow_engine.structure.get_all_global_ids())
 
@@ -86,7 +85,6 @@ def train(class_num, max_epochs=10):
 
 
 if __name__ == "__main__":
-    print("learning started...")
     class_number = 201
     GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_number))
     train(class_number)

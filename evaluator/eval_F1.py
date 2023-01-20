@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score
 
-# код Юли
+# код Юли # TODO периодичсески падает (искать рандом сид с падением?)
 def binarization(true_class_train, contrast_class_train, test_sample):
     bin_edges_true = np.histogram(true_class_train)
     count_true, bins_true = np.histogram(true_class_train, bins=bin_edges_true[1],

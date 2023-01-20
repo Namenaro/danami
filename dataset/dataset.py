@@ -16,13 +16,13 @@ def binarise_img(pic):
 
 
 class Dataset:
-    def __init__(self, contast_sample_len, train_len=10, contrast_test_len=50, class_num=None):
+    def __init__(self, contast_train_len, true_train_len=5, contrast_test_len=5, class_num=None):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(dir_path, './data_om')
         self.ominset = datasets.Omniglot(root=path, download=True, transform=None)
 
-        self.TRAIN_TRUE_LEN = train_len
-        self.TRAIN_CONTRAST_LEN = contast_sample_len
+        self.TRAIN_TRUE_LEN = true_train_len
+        self.TRAIN_CONTRAST_LEN = contast_train_len
         self.TEST_CONTRAST_LEN = contrast_test_len
 
         self.class_num = class_num
@@ -54,6 +54,7 @@ class Dataset:
         return self.etalon_cogmap
 
     def reset_class_num(self, new_class_num):
+        print("Init dataset object on symbol " + str(new_class_num))
         self.class_num = new_class_num
 
         class_pics = self.get_all_pics_for_class(self.class_num)
@@ -70,6 +71,7 @@ class Dataset:
         self.true_cogmaps_TRAIN = self.get_cogmaps_for_pics(train_true_pics)
 
         self.etalon_cogmap = Cogmap(etalon_pic)
+        print("Dataset created")
 
     # ------- служебное------------------
     def get_contrast_pics(self, sample_size):

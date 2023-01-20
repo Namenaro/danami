@@ -28,6 +28,7 @@ class StatObject:
                               contrast_class_train=contrast_class_train_sample,
                               true_class_test=self.true_class_test_sample,
                               contrast_class_test=self.contrast_class_test_sample)
+        print("Stat object filled")
 
     def get_F1(self):
         return self.F1

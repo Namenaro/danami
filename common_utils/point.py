@@ -21,7 +21,7 @@ class Point:
         return Point(self.x - other.x, self.y - other.y)
 
     def norm(self):
-        return abs(self.point.x) + abs(self.point.y)
+        return abs(self.x) + abs(self.y)
 
     def dist_to(self, point2):
         dx = abs(self.x - point2.x)

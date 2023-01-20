@@ -43,10 +43,14 @@ class EventMemory:
         return e
 
     def eval_u_dx(self, real_u_dx):
+        if real_u_dx is None:
+            return 0
         e = 1 - self.param_mass.get_probability(real_u_dx)
         return e
 
     def eval_u_dy(self, real_u_dy):
+        if real_u_dy is None:
+            return 0
         e = 1 - self.param_mass.get_probability(real_u_dy)
         return e
 
