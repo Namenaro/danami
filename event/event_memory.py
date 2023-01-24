@@ -44,9 +44,9 @@ class EventMemory:
 
     def eval_realisation(self, event_realisation, u_dx, u_dy):
         e = self.eval_mass(event_realisation.mass) + \
-            self.eval_u_dx(u_dx) + \
-            self.eval_u_dy(u_dy) + \
-            self.eval_LUE()
+            0.5*self.eval_u_dx(u_dx) + \
+            0.5*self.eval_u_dy(u_dy) #+ self.eval_LUE()
+
         return e
 
     #-------------------------------------------------------

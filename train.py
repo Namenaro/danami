@@ -9,7 +9,7 @@ from globals import GLOBALS
 from drawers import StructColorator, draw_examples_recognition, draw_process_precognition_on_cogmap, draw_realisation_on_ax, draw_stat_object
 
 import matplotlib.pyplot as plt
-
+import random
 
 def LOG_every_step(structure, master_realisation, master_cogmap, colorator, stat_object, step_num):
     # ----------------------------------------------------------------------------------------:
@@ -59,7 +59,7 @@ def LOG_learning_curve(F1_history):
     GLOBALS.LOG_CURVE.add_fig(fig)
 
 
-def train(class_num, max_epochs=10):
+def train(class_num, max_epochs=7):
     GLOBALS.DATA.reset_class_num(class_num)
     print("learning started...")
     cogmap = GLOBALS.DATA.get_etalon_cogmap()
@@ -86,13 +86,21 @@ def train(class_num, max_epochs=10):
         # -----------------------------------------------------
     print("Learning ended fully!")
     LOG_learning_curve(F1_history)
+    if len(F1_history) == 0:
+        return 0
+    return F1_history[-1]
 
 
 if __name__ == "__main__":
-    class_number = 201
-    GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_number))
-    train(class_number)
+    class_numbers = random.sample(range(0,300), 20)
+    F1_sum = 0
+    for class_number in class_numbers:
+        GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_number))
+        F1 = train(class_number)
+        F1_sum += F1
 
+    mean_F1 = F1_sum/len(class_numbers)
+    print ("mean F1 = " + mean_F1)
 
 
 

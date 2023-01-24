@@ -13,8 +13,7 @@ class RecogniserEngine:
         self.generations_list = []
         self.win_quality = None
 
-    def recognise(self): # возвращает один "лучший" экземпляр структуры (не обязательно доросший до конца)
-        GLOBALS.LOG_CURVE.add_text(str(self.structure))
+    def recognise(self):  # возвращает один "лучший" экземпляр структуры (не обязательно доросший до конца)
         self._init_first_generation()
         if self.generations_list[0].is_empty():
             return None

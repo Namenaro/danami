@@ -18,7 +18,7 @@ class GrowStep:
 
 
     def grow_step(self):
-        WANTED_NUM_CANDIDATES = 3
+        WANTED_NUM_CANDIDATES = 4
         list_selected_local_ids = self.select_forward_candidates(WANTED_NUM_CANDIDATES)
         if len(list_selected_local_ids) == 0:
             return False
@@ -100,7 +100,7 @@ class GrowStep:
                 best_u_from_parent = potential_u_from_parent
                 best_global_parent_id = global_id
             else:
-                if best_u_from_parent.norm() < potential_u_from_parent.norm():
+                if best_u_from_parent.norm() > potential_u_from_parent.norm():
                     best_u_from_parent = potential_u_from_parent
                     best_global_parent_id = global_id
 
