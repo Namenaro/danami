@@ -1,2 +1,3 @@
 from grower.init_struct import init_struct
-from grower.grow_step import GrowStep
+from grower.grow_engine import GrowEngine
+from grower.dammy_struct_creator import get_dammy_struct_and_realisation

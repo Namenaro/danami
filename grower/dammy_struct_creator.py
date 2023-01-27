@@ -6,6 +6,11 @@ from event import EventMemory, EventStat, OuterEventVals, InnerEventVals
 from globals import GLOBALS
 
 
+def get_dammy_struct_and_realisation(cogmap, num_events):
+    best_ids = cogmap.select_n_most_massive_ids(wanted_num_candidates=num_events, exceptions=[])
+    struct_realisation, struct_memory = get_dammy_struct_and_realisation_from_events_list(best_ids, cogmap)
+    return struct_realisation, struct_memory
+
 def get_dammy_struct_and_realisation_from_events_list(cogmap_events_ids_list, cogmap):
     # создаем матрицу полносвязного графа с вершинами в cogmap_events_ids и ребрами-расстояниями
     result_matrix_us = events_list_to_matrix(cogmap_events_ids_list, cogmap)

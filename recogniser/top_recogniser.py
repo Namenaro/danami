@@ -18,7 +18,7 @@ def recognition_resume_for_top(top, struct_realisation, cogmap):
                                                                         LUE=top.LUE_id,
                                                                         wanted_num_events=1,
                                                                         exlusions=struct_realisation.get_list_of_local_ids())
-        if len(local_events_ids_list) ==0:
+        if len(local_events_ids_list) == 0:
             return None, expected_point, None
         event_local_id = local_events_ids_list[0]
 

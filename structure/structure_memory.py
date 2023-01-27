@@ -17,6 +17,15 @@ class StructureMemory:
     def __len__(self):
         return len(self.recognition_order)
 
+    def is_linked_to_parent(self, global_id):
+        linked_event_id = self.linked_pairs.get(global_id, None)
+        if linked_event_id is None:
+            return False
+        parent_global_id = self.child_to_parent[global_id]
+        if parent_global_id == linked_event_id:
+            return True
+        return False
+
     def get_all_global_ids(self):
         return self.recognition_order
 

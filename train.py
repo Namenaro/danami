@@ -1,12 +1,12 @@
 from globals import GLOBALS
 from cogmap import Cogmap
-from event import EventRealisation, EventMemory
+from event import EventMemory
 
-from grower import init_struct, grow_step
+from grower import get_dammy_struct_and_realisation, GrowEngine
 from common_utils import HtmlLogger
-from grower import GrowStep
 from globals import GLOBALS
 from drawers import StructColorator, draw_examples_recognition, draw_process_precognition_on_cogmap, draw_realisation_on_ax, draw_stat_object
+
 
 import matplotlib.pyplot as plt
 import random
@@ -59,31 +59,37 @@ def LOG_learning_curve(F1_history):
     GLOBALS.LOG_CURVE.add_fig(fig)
 
 
-def train(class_num, max_epochs=7):
+def train(class_num, num_events):
     GLOBALS.DATA.reset_class_num(class_num)
-    print("learning started...")
+    print("Learning started...")
     cogmap = GLOBALS.DATA.get_etalon_cogmap()
-    struct, master_realisation = init_struct(cogmap)
+    master_struct, master_realisation = get_dammy_struct_and_realisation(cogmap, num_events=num_events)
+    print("Master-realisation/partial-struct were created...")
 
     colorator = StructColorator()
+    colorator.update(master_struct.get_all_global_ids())
+
     F1_history = []
 
-    grow_engine = GrowStep(struct, master_realisation, cogmap)
-    for step_num in range(1, max_epochs):
+    grow_engine = GrowEngine(master_struct, master_realisation)
+    for step_num in range(1, len(master_realisation)):
         print("Learning: step " + str(step_num) + " started...")
         success = grow_engine.grow_step()
         if not success:
-            print("Learninng ended because master-realisation can not grow further")
+            print("Learning ended abruptly")
             break
         # -----------блок визуального логирования--------------
-        colorator.update(grow_engine.structure.get_all_global_ids())
 
-        LOG_every_step(grow_engine.structure, grow_engine.master_realisation,
-                       grow_engine.master_cogmap, colorator,
-                        grow_engine.stat_object, step_num)
+        LOG_every_step(structure = grow_engine.growing_structure,
+                       master_realisation=grow_engine.growing_realisation,
+                       master_cogmap = cogmap,
+                       colorator=colorator,
+                       stat_object=grow_engine.stat_object,
+                       step_num=step_num)
 
         F1_history.append(grow_engine.stat_object.get_F1())
         # -----------------------------------------------------
+
     print("Learning ended fully!")
     LOG_learning_curve(F1_history)
     if len(F1_history) == 0:
@@ -92,15 +98,17 @@ def train(class_num, max_epochs=7):
 
 
 if __name__ == "__main__":
-    class_numbers = random.sample(range(0,300), 20)
+    num_events = 4
+    class_numbers = random.sample(range(0, 300))
     F1_sum = 0
     for class_number in class_numbers:
-        GLOBALS.LOG_GROUTH.add_text("symbol is " + str(class_number))
-        F1 = train(class_number)
+        GLOBALS.LOG_GROUTH.add_text("Symbol is " + str(class_number))
+        F1 = train(class_number, num_events)
         F1_sum += F1
 
     mean_F1 = F1_sum/len(class_numbers)
-    print ("mean F1 = " + mean_F1)
+    print("mean F1 = " + str(mean_F1))
+
 
 
 
