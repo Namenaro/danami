@@ -16,10 +16,10 @@ def draw_realisation_on_ax(struct_realisation, struct_colorator, structure, cogm
         ax.set_title(str(title))
     # рисуем сами события
     for global_id, id_in_cogmap in struct_realisation.global_ids_to_locals.items():
-        event_realisation = cogmap.get_event_by_id(id_in_cogmap)
+        zmeyka = cogmap.get_zmeika_by_event_id(id_in_cogmap)
         color = struct_colorator.get_color_for_id(global_id)
 
-        for coord in event_realisation.zmeika_points:
+        for coord in zmeyka:
             ax.scatter(coord.x, coord.y, c=[color], marker='o', alpha=0.4, s=200)
 
         point = cogmap.get_point_by_event_id(id_in_cogmap)

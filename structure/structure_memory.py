@@ -1,9 +1,10 @@
-from event import EventMemory,  EventRealisation
-from globals import GLOBALS
 from event import EventMemory
+from globals import GLOBALS
+
 
 # Хранит глобальные айдишники выученных событий и относительные управления между ними.
 # порядок разпознавания
+
 
 class StructureMemory:
     def __init__(self):
@@ -16,34 +17,21 @@ class StructureMemory:
     def __len__(self):
         return len(self.recognition_order)
 
-    def __str__(self):
-        res = "Struct-" + str(len(self.recognition_order))
-        res += "IDS: " + str(self.recognition_order)
-        for global_id, event_memory in self.events.items():
-            res += "-----ID=" + str(global_id) + ": " + str(event_memory)
-        #res += ", order=" + str(self.recognition_order)
-        #res += ", child_to_parent = " + str(self.child_to_parent)
-        return res
-
     def get_all_global_ids(self):
         return self.recognition_order
 
     def get_info_about_event(self, global_event_id):
         event_memory = self.events[global_event_id]
-        LUE_id = event_memory.get_LUE()
-        mass = event_memory.get_mass()
+        LUE = event_memory.LUE
+        inner_params_vals = event_memory.get_inner_vals_expected()
 
         parent_global_id = self.child_to_parent[global_event_id]
         u_from_parent = None  # это может быть первый узел, и тогда родителя у него нет
         if parent_global_id is not None:
             u_from_parent = self.us_from_parent_to_child[(parent_global_id, global_event_id)]
-        return LUE_id, mass, parent_global_id, u_from_parent
-
-    def get_event_memory_obj(self, global_id):
-        return self.events[global_id]
+        return LUE, inner_params_vals, parent_global_id, u_from_parent
 
     def add_new_event(self, event_memory, u_from_parent, parent_global_id, is_linked_to_parent):
-
         global_id = GLOBALS.GLOBAL_IDS_GEN.generate_id()
 
         self.events[global_id] = event_memory
@@ -54,6 +42,9 @@ class StructureMemory:
             self.linked_pairs[global_id] = parent_global_id
             self.linked_pairs[parent_global_id] = global_id
 
+    def get_event_memory_obj(self, global_id):
+        return self.events[global_id]
+
     def get_linked_to_this_event(self, this_event_global_id):
         return self.linked_pairs.get(this_event_global_id, None)
 
@@ -61,8 +52,7 @@ class StructureMemory:
         global_id = self.recognition_order[0]
         return global_id
 
-    def set_first_event(self, event_memory):
-        global_id = GLOBALS.GLOBAL_IDS_GEN.generate_id()
+    def set_first_event(self, event_memory, global_id):
         self.child_to_parent[global_id] = None
         self.us_from_parent_to_child[(None, global_id)] = None
         self.recognition_order.append(global_id)

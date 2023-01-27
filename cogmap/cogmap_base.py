@@ -1,4 +1,3 @@
-from event import EventRealisation
 from common_utils import IdsGenerator
 from cogmap.LUE_rule import LUERule
 from cogmap.utils import *
@@ -20,7 +19,8 @@ class CogmapBase:
         self.local_ids_gen = IdsGenerator()
 
         self.points_to_events_ids = {}  # {point:  [id_in_cogmap] }
-        self.events_ids_to_realisations = {}  # {id_in_cogmap:  EventRealisation }
+        self.events_ids_to_LUES = {}  # {id_in_cogmap:  LUE }
+        self.events_ids_to_zmeykas = {}  # {id_in_cogmap:  zmeyka }
         self.events_ids_to_points = {}   # id_in_cogmap: Point
         self.events_links = {}  # {id_in_cogmap:  id_in_cogmap}
         self.events_list_sorted_by_mass = []
@@ -56,12 +56,14 @@ class CogmapBase:
         # событие начало
         id_of_start_in_cogmap = self.local_ids_gen.generate_id()
         start_event_point = seq[0]
-        start_event = EventRealisation(seq, LUE=rule.start_LUE_id)
+        start_event_zmeyka = seq
+        start_event_LUE = rule.start_LUE_id
 
         # событие конец
         id_of_end_in_cogmap = self.local_ids_gen.generate_id()
         end_event_point = seq[-1]
-        end_event = EventRealisation(seq, LUE=rule.end_LUE_id, )
+        end_event_zmeyka = seq
+        end_event_LUE = rule.end_LUE_id
 
         # регистрация событий на карте:
         # 1. регистрируем событие в точке
@@ -73,8 +75,11 @@ class CogmapBase:
         self.points_to_events_ids[end_event_point].append(id_of_end_in_cogmap)
 
         # 2. свазяваем данные по событию с его локальным именем, уникальным в этой карте
-        self.events_ids_to_realisations[id_of_start_in_cogmap] = start_event
-        self.events_ids_to_realisations[id_of_end_in_cogmap] = end_event
+        self.events_ids_to_LUES[id_of_start_in_cogmap] = start_event_LUE
+        self.events_ids_to_LUES[id_of_end_in_cogmap] = end_event_LUE
+
+        self.events_ids_to_zmeykas[id_of_start_in_cogmap] = start_event_zmeyka
+        self.events_ids_to_zmeykas[id_of_end_in_cogmap] = end_event_zmeyka
 
         # 3. помечаем, какие события порождены одной змейкой
         self.events_links[id_of_start_in_cogmap] = id_of_end_in_cogmap
@@ -89,6 +94,8 @@ class CogmapBase:
         self.insert_by_mass(id_of_start_in_cogmap)
         self.insert_by_mass(id_of_end_in_cogmap)
 
+    def get_mass_of_event(self, event_id):
+        return len(self.events_ids_to_zmeykas[event_id])
 
     def insert_by_mass(self, id_in_cogmap):
-        insort(self.events_list_sorted_by_mass, id_in_cogmap, key=lambda x: -self.events_ids_to_realisations[x].mass)
+        insort(self.events_list_sorted_by_mass, id_in_cogmap, key=lambda x: -self.get_mass_of_event(x))

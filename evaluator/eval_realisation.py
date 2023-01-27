@@ -1,6 +1,6 @@
 from structure import StructureMemory, StructureRealisation
 from cogmap import Cogmap
-from event import EventMemory, EventRealisation
+from event import EventMemory
 
 
 def eval_realisation_non_triviality(struct_realisation, struct_memory, cogmap):
@@ -10,18 +10,15 @@ def eval_realisation_non_triviality(struct_realisation, struct_memory, cogmap):
         local_id = struct_realisation.get_local_id_by_global(global_id)
         if local_id is None:
             break
-        event_realisation = cogmap.get_event_by_id(local_id)
+        zmeyka = cogmap.get_zmeika_by_event_id(local_id)
         event_memory = struct_memory.get_event_memory_obj(global_id)
         if struct_memory.is_event_first(global_id):
-            u_dx = None
-            u_dy = None
+            u_err = None
         else:
             predicted_point, real_point = get_predicted_and_real_point(global_id, struct_realisation, struct_memory, cogmap)
-            du_point = real_point - predicted_point
-            u_dx = du_point.x
-            u_dy = du_point.y
+            u_err = real_point - predicted_point
 
-        non_triviality += event_memory.eval_realisation(event_realisation, u_dx=u_dx, u_dy=u_dy)
+        non_triviality += event_memory.eval_realisation(zmeyka, u_err)
 
     return non_triviality
 

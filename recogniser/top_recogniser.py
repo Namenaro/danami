@@ -1,5 +1,5 @@
 from structure import StructureMemory, StructureRealisation, StructureTop
-from event import EventRealisation
+from event import InnerEventVals, OuterEventVals, EventMemory, EventStat
 from cogmap import Cogmap
 from common_utils import Point
 
@@ -19,9 +19,9 @@ def recognition_resume_for_top(top, struct_realisation, cogmap):
                                                                         wanted_num_events=1,
                                                                         exlusions=struct_realisation.get_list_of_local_ids())
         if len(local_events_ids_list) ==0:
-            return None, None, expected_point, None
+            return None, expected_point, None
         event_local_id = local_events_ids_list[0]
 
-    event_realisation = cogmap.get_event_by_id(event_local_id)
+    zmeyka = cogmap.get_zmeika_by_event_id(event_local_id)
     real_point = cogmap.get_point_by_event_id(event_local_id)
-    return event_local_id, event_realisation, expected_point, real_point
+    return zmeyka, expected_point, real_point

@@ -27,8 +27,8 @@ class BasicGenerationSorted:
     def init_as_first_generation(self, structure, cogmap):
         global_node_id = structure.get_first_event_id()
         LUE_id, mass, parent_global_id, u_from_parent = structure.get_info_about_event(global_node_id)
-        for id_in_cogmap,  event_realisation in cogmap.events_ids_to_realisations.items():
-            if event_realisation.LUE == LUE_id:
+        for id_in_cogmap,  LUE in cogmap.events_ids_to_LUES.items():
+            if LUE == LUE_id:
                 realisation = StructureRealisation()
                 realisation.add_new_check_result(global_id=global_node_id, id_in_cogmap=id_in_cogmap)
                 self.insert_new_realisation(realisation, structure, cogmap)

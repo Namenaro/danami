@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 class Hist:
     def __init__(self, sample=None):
         self.sample = []
@@ -28,6 +29,9 @@ class Hist:
         if self.sample is not None:
             return len(self.sample)
         return 0
+
+    def add(self, value):
+        self.sample.appen(value)
 
 
 class BinaryHist:

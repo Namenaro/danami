@@ -23,15 +23,15 @@ class Cogmap(CogmapBase):
             for candidate_point in candidate_points:
                 events_ids_list_in_point = self.points_to_events_ids.get(candidate_point, [])
                 for event_id_in_cogmap in events_ids_list_in_point:
-                    real_LUE = self.events_ids_to_realisations[event_id_in_cogmap].LUE
+                    real_LUE = self.events_ids_to_LUES[event_id_in_cogmap]
                     if real_LUE == LUE:
                         if event_id_in_cogmap not in exlusions:
                             result_ids_in_cogmap.append(event_id_in_cogmap)
         return result_ids_in_cogmap
 
 
-    def get_event_by_id(self, id_in_cogmap):
-        return self.events_ids_to_realisations[id_in_cogmap]
+    def get_zmeika_by_event_id(self, id_in_cogmap):
+        return self.events_ids_to_zmeykas[id_in_cogmap]
 
     def get_point_by_event_id(self, id_in_cogmap):
         return self.events_ids_to_points[id_in_cogmap]
@@ -42,8 +42,8 @@ class Cogmap(CogmapBase):
     def select_most_massive(self):
         sorted_ids_list = self.events_list_sorted_by_mass
         best_id = sorted_ids_list[0]
-        best_realisation = self.events_ids_to_realisations[best_id]
-        return best_realisation, best_id
+        zmeyka = self.get_zmeika_by_event_id[best_id]
+        return zmeyka, best_id
 
     def select_n_most_massive_ids(self, n, exceptions):
         approved_ids = []

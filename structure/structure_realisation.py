@@ -27,3 +27,9 @@ class StructureRealisation:
 
     def __str__(self):
         return "StructRealis: global_ids_to_locals = " + str(self.global_ids_to_locals)
+
+    def get_global_id_by_local(self, local_id):
+        for global_id, id_in_cogmap in self.global_ids_to_locals.items():
+            if local_id == id_in_cogmap:
+                return global_id
+        return None
