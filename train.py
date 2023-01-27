@@ -59,11 +59,11 @@ def LOG_learning_curve(F1_history):
     GLOBALS.LOG_CURVE.add_fig(fig)
 
 
-def train(class_num, num_events):
+def train(class_num, num_events_in_dammy_struct):
     GLOBALS.DATA.reset_class_num(class_num)
     print("Learning started...")
     cogmap = GLOBALS.DATA.get_etalon_cogmap()
-    master_struct, master_realisation = get_dammy_struct_and_realisation(cogmap, num_events=num_events)
+    master_struct, master_realisation = get_dammy_struct_and_realisation(cogmap, num_events=num_events_in_dammy_struct)
     print("Master-realisation/partial-struct were created...")
 
     colorator = StructColorator()
@@ -98,15 +98,18 @@ def train(class_num, num_events):
 
 
 if __name__ == "__main__":
-    num_events = 4
-    class_numbers = random.sample(range(0, 300))
+    num_events_to_learn = 3  # будем измерять качество алгоритма вцелом на датасете, устредняя F1
+    num_events_in_dammy_struct = 4  # настройка алгоритма: сколько шагов обучения хотим?
+
+    class_numbers = random.sample(range(0, 300), num_events_to_learn)
+
     F1_sum = 0
-    for class_number in class_numbers:
-        GLOBALS.LOG_GROUTH.add_text("Symbol is " + str(class_number))
-        F1 = train(class_number, num_events)
+    for class_number_to_learn in class_numbers:
+        GLOBALS.LOG_GROUTH.add_text("Symbol is " + str(class_number_to_learn))
+        F1 = train(class_number_to_learn, num_events_in_dammy_struct=num_events_in_dammy_struct)
         F1_sum += F1
 
-    mean_F1 = F1_sum/len(class_numbers)
+    mean_F1 = F1_sum/num_events_to_learn
     print("mean F1 = " + str(mean_F1))
 
 
