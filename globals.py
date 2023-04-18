@@ -41,7 +41,7 @@ class Globals(Singleton):
         self.LOG_RECOG.add_text("Процесс распознавания (рост ростков) ")
 
         # датасет
-        self.TRAIN_CONTRAST_LEN = 100
+        self.TRAIN_CONTRAST_LEN = 30
         self.DATA = Dataset(self.TRAIN_CONTRAST_LEN)
 
 

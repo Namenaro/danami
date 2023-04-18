@@ -15,8 +15,8 @@ class InnerEventVals:
 
 # параметры, характеризующие взаимойдействе события с другими событиями на карте--------
 class OuterEventVals:
-    outer_functions = {OUTER_PARAM_DU: du_function,
-                       OUTER_PARAM_DX: dx_function}
+    outer_functions = {OUTER_PARAM_DU: du_function}
+        #, OUTER_PARAM_DX: dx_function}
 
     def __init__(self):
         self.params_values_dict = {}  # {param_name: param_value}

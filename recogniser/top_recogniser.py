@@ -3,6 +3,7 @@ from event import InnerEventVals, OuterEventVals, EventMemory, EventStat
 from cogmap import Cogmap
 from common_utils import Point
 
+
 def recognition_resume_for_top(top, struct_realisation, cogmap):
     local_parent_id = struct_realisation.get_local_id_by_global(top.global_parent_id)
     point_of_parent = cogmap.get_point_by_event_id(local_parent_id)

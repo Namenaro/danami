@@ -40,9 +40,7 @@ class StructureMemory:
             u_from_parent = self.us_from_parent_to_child[(parent_global_id, global_event_id)]
         return LUE, inner_params_vals, parent_global_id, u_from_parent
 
-    def add_new_event(self, event_memory, u_from_parent, parent_global_id, is_linked_to_parent):
-        global_id = GLOBALS.GLOBAL_IDS_GEN.generate_id()
-
+    def add_new_event(self, event_memory, u_from_parent, parent_global_id, is_linked_to_parent, global_id):
         self.events[global_id] = event_memory
         self.recognition_order.append(global_id)
         self.child_to_parent[global_id] = parent_global_id

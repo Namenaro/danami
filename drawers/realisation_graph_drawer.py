@@ -1,6 +1,6 @@
 from structure import StructureRealisation, StructureMemory
 from cogmap import Cogmap
-from event import EventRealisation
+from event import *
 from drawers.colorator import StructColorator
 from globals import GLOBALS
 

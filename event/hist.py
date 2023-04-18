@@ -31,7 +31,10 @@ class Hist:
         return 0
 
     def add(self, value):
-        self.sample.appen(value)
+        self.sample.append(value)
+
+    def is_empty(self):
+        return len(self) == 0
 
 
 class BinaryHist:

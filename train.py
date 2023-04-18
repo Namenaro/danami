@@ -63,7 +63,7 @@ def train(class_num, num_events_in_dammy_struct):
     GLOBALS.DATA.reset_class_num(class_num)
     print("Learning started...")
     cogmap = GLOBALS.DATA.get_etalon_cogmap()
-    master_struct, master_realisation = get_dammy_struct_and_realisation(cogmap, num_events=num_events_in_dammy_struct)
+    master_realisation, master_struct = get_dammy_struct_and_realisation(cogmap, num_events=num_events_in_dammy_struct)
     print("Master-realisation/partial-struct were created...")
 
     colorator = StructColorator()
@@ -80,9 +80,9 @@ def train(class_num, num_events_in_dammy_struct):
             break
         # -----------блок визуального логирования--------------
 
-        LOG_every_step(structure = grow_engine.growing_structure,
+        LOG_every_step(structure=grow_engine.growing_structure,
                        master_realisation=grow_engine.growing_realisation,
-                       master_cogmap = cogmap,
+                       master_cogmap=cogmap,
                        colorator=colorator,
                        stat_object=grow_engine.stat_object,
                        step_num=step_num)
@@ -99,9 +99,10 @@ def train(class_num, num_events_in_dammy_struct):
 
 if __name__ == "__main__":
     num_events_to_learn = 3  # будем измерять качество алгоритма вцелом на датасете, устредняя F1
-    num_events_in_dammy_struct = 4  # настройка алгоритма: сколько шагов обучения хотим?
+    num_events_in_dammy_struct = 7  # настройка алгоритма: сколько шагов обучения хотим?
 
-    class_numbers = random.sample(range(0, 300), num_events_to_learn)
+    class_numbers = []#random.sample(range(0, 300), num_events_to_learn)
+    class_numbers.append(31)
 
     F1_sum = 0
     for class_number_to_learn in class_numbers:

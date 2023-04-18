@@ -1,6 +1,7 @@
 from structure import StructureTop, StructureMemory, StructureRealisation
 from samplers import sample_top, StatObject, fill_event_memory_naive
 from globals import GLOBALS
+from event import *
 
 
 class GrowEngine:
@@ -21,11 +22,11 @@ class GrowEngine:
         SUCCESS = True
         FAIL = False
 
-        num_step = len(self.master_realisation)
+        num_step = len(self.growing_structure)
         global_event_id = self.master_structure.recognition_order[num_step]
 
         top = self._init_top_for_struct(global_event_id)
-        event_memory = sample_top(self.growing_structure, [top])[0]
+        event_memory = sample_top(self.growing_structure, top)
 
         if event_memory.has_empty_hists():
             return FAIL
@@ -33,7 +34,8 @@ class GrowEngine:
         self.growing_structure.add_new_event(event_memory,
                                              u_from_parent=top.u_from_parent,
                                              parent_global_id=top.global_parent_id,
-                                             is_linked_to_parent=top.is_linked_to_parent)
+                                             is_linked_to_parent=top.is_linked_to_parent,
+                                             global_id=global_event_id)
 
         self.growing_realisation.add_new_check_result(global_id=global_event_id,
                                                       id_in_cogmap=self.master_realisation.get_local_id_by_global(
@@ -65,7 +67,7 @@ class GrowEngine:
                                                LUE=LUE,
                                                sample_size=GLOBALS.CONTRAST_SAMPLE_LEN_FOR_STAT)
 
-        self.growing_structure.set_first_event(event_memory)
+        self.growing_structure.set_first_event(global_id=global_event_id, event_memory=event_memory)
         self.growing_realisation.add_new_check_result(global_id=global_event_id,
                                                       id_in_cogmap=self.master_realisation.get_local_id_by_global(
                                                           global_event_id))

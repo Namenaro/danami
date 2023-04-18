@@ -23,8 +23,8 @@ class EventMemory:
         for param_name, hist in self.event_stat.inner_hists.items():
             real_val = event_vals.params_values_dict[param_name]
             expected_val = self.inner_event_vals.params_values_dict[param_name]
-            param_e = hist.get_probability_of_event(real_value=real_val, predicted_value=expected_val)
-            e+=param_e
+            param_p = hist.get_probability_of_event(real_value=real_val, predicted_value=expected_val)
+            e+= 1 - param_p
         return e
 
     def eval_realisation_outer(self, u_err):
@@ -36,10 +36,13 @@ class EventMemory:
         e = 0
         for param_name, hist in self.event_stat.outer_hists.items():
             real_val = event_vals.params_values_dict[param_name]
-            expected_val = self.inner_event_vals.params_values_dict[param_name]
-            param_e = hist.get_probability_of_event(real_value=real_val, predicted_value=expected_val)
-            e += param_e
+            expected_val = 0
+            param_p = hist.get_probability_of_event(real_value=real_val, predicted_value=expected_val)
+            e += 1 - param_p
         return e
 
     def get_inner_vals_expected(self):
-        return self.inner_event_vals.params_values_dict
+        return self.inner_event_vals
+
+    def has_empty_hists(self):
+        return self.event_stat.first_hist_is_empty()

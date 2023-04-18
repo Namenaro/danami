@@ -6,8 +6,6 @@ def mass_function(zmeyka):
     return len(zmeyka)
 
 
-
-
 # Outer:------------------------------------------------------
 OUTER_PARAM_DU = "outer_param_du"
 def du_function(du_point):

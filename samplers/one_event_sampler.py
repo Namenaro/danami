@@ -14,7 +14,7 @@ def fill_event_memory_naive(inner_event_vals, sample_size, LUE):
             du = event_point - random_point
             event_stat.add_realisation(zmeyka, du)
 
-    return EventMemory(event_stat=event_stat, event_vals=inner_event_vals)
+    return EventMemory(LUE=LUE, event_stat=event_stat, event_vals=inner_event_vals)
 
 
 # вспомогательный метод
